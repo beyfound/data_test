@@ -146,8 +146,4 @@ public class UserController {
         return true;
     }
 
-    @GetMapping("/user/station")
-    public String getStation(String org) {
-        return  stationService.getIdleStationIdByOrg(org);
-    }
 }
