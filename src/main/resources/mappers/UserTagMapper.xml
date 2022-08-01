@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+mybatis是使用接口动态代理
+-->
+<mapper namespace="com.alvaria.datareuse.dao.UserTagMapper">
+<!--    <select id="findUserListByTags" resultType="integer">-->
+<!--        select * from `user` where id in(-->
+<!--            SELECT b.user_id FROM user_tag b, tag t WHERE-->
+<!--            <foreach collection="array" item="tag" separator=" OR ">-->
+<!--                (t.tag_name LIKE CONCAT('%',#{tag},'%') AND  b.tag_id=t.id)-->
+<!--            </foreach>-->
+<!--            GROUP BY user_id HAVING COUNT(b.user_id)=${array.length}-->
+<!--            )-->
+<!--    </select>-->
+
+    <select id="findUserListByTags" resultType="com.alvaria.datareuse.entity.User">
+        select * from `user` where
+        <foreach collection="array" item="tag" separator=" AND ">
+            tags LIKE CONCAT('%',#{tag},'%')
+        </foreach>
+    </select>
+</mapper>

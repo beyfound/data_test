@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+mybatis是使用接口动态代理
+-->
+<mapper namespace="com.alvaria.datareuse.dao.UserStatusMapper">
+    <resultMap id="userStatusDetail" type="com.alvaria.datareuse.entity.UserStatus">
+        <id column="id" property="id"/>
+
+        <result column="org" property="org"/>
+        <result column="start_time" property="startTime"/>
+        <result column="user_id" property="userId"/>
+        <result column="uuid" property="uuid"/>
+        <result column="test_case" property="testCase"/>
+
+        <association property="user" javaType="com.alvaria.datareuse.entity.User">
+            <id property="id" column="user_id"/>
+            <result property="email" column="email"/>
+            <result property="display" column="display"/>
+            <result property="role" column="role"/>
+            <result property="station" column="station"/>
+
+        </association>
+    </resultMap>
+
+
+    <select id="findStatusByUserIdAndOrg" resultMap="userStatusDetail">
+        select
+            s.org, s.start_time, s.user_id user_id, s.uuid, s.test_case, s.id, u.email_prefix, u.display_name, u.role
+        from user_status s inner join user u on s.user_id = u.id and s.org =#{org} and s.user_id=#{userId}
+    </select>
+
+    <select id="findStatusByUserId" resultMap="userStatusDetail">
+        select
+            s.org, s.start_time, s.user_id user_id, s.uuid, s.test_case, s.id, u.email_prefix, u.display_name, u.role
+        from user_status s inner join `user` u on s.user_id = u.id and s.user_id=#{userId}
+    </select>
+
+    <select id="findAllStatus" resultMap="userStatusDetail">
+        select
+            s.org, s.start_time, s.user_id user_id, s.uuid, s.test_case, s.id, u.email_prefix, u.display_name, u.role
+        from user_status s inner join user u on s.user_id
+    </select>
+
+    <update id="updateStation" >
+        UPDATE `user_status`
+        <set >
+            <if test="station != null">
+                station = #{station}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+
+    </update>
+</mapper>

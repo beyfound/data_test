@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+mybatis是使用接口动态代理
+-->
+<mapper namespace="com.alvaria.datareuse.dao.UserMapper">
+    <delete id="deleteByIds">
+        delete from `user` where
+        <foreach collection="ids" item="id" separator=" or ">
+            id = #{id}
+        </foreach>
+    </delete>
+
+    <select id="getUserById" resultType="com.alvaria.datareuse.entity.User">
+        select * from user where id = #{user_id}
+    </select>
+
+    <select id="findAll" resultType="com.alvaria.datareuse.entity.User">
+        select * from user
+    </select>
+
+    <select id="getUserByIdentityString" resultType="com.alvaria.datareuse.entity.User">
+        select * from user where identity = #{identity}
+    </select>
+
+    <insert id="insertUsers" >
+        INSERT into `user` (`email`, `display`, `role`,`identity`,`tags`,`password`,`c_password`,`station`,`user_name`,`first_name`,`last_name`,`mgr_team_list`,`team`,`DID`, `personal_type`,`name`,`t_zone`, `language`,`manager_of_team`, `telephone_number` )
+        values
+        <foreach collection="list" item="user" separator=",">
+            (#{user.email},#{user.display},#{user.role},#{user.identity},#{user.tags},#{user.password},#{user.cPassword},#{user.station},#{user.userName},#{user.firstName},#{user.lastName},#{user.mgrTeamList},#{user.team},#{user.DID},#{user.personalType},#{user.name},#{user.tZone},#{user.language},#{user.managerOfTeam},#{user.telephoneNumber})
+        </foreach>
+    </insert>
+
+    <insert id="insertUser" parameterType="com.alvaria.datareuse.entity.User" useGeneratedKeys = "true" keyProperty = "id">
+        INSERT into `user` (`email`, `display`, `role`,`identity`,`tags`,`password`,`c_password`,`station`,`user_name`,`first_name,`last_name`,`mgr_team_list`,
+            `team`,`DID`, `personal_type`,`name`,`t_zone`, `language`,`manager_of_team`, `telephone_number` )
+        values
+            (#{user.email},#{user.display},#{user.role},#{user.identity},#{user.tags},#{user.password},#{user.cPassword},#{user.station},#{user.userName},#{user.firstName},#{user.lastName}
+                           ,#{user.mgrTeamList},#{user.team},#{user.DID},#{user.personalType},#{user.name},#{user.tZone},#{user.language},#{user.managerOfTeam},#{user.telephoneNumber})
+    </insert>
+
+    <update id="update" >
+        UPDATE `user`
+        <set >
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="displayName != null">
+                display_name = #{displayName},
+            </if>
+            <if test="role != null">
+                role = #{role},
+            </if>
+            <if test="tags != null">
+                tags = #{tags},
+            </if>
+            <if test="identity != null">
+                identity = #{identity},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="c_password != null">
+                c_password = #{cPassword},
+            </if>
+            <if test="station != null">
+                station = #{station},
+            </if>
+            <if test="user_name != null">
+                user_name = #{userName},
+            </if>
+            <if test="first_name != null">
+                first_name = #{firstName},
+            </if>
+            <if test="last_name != null">
+                last_name = #{lastName},
+            </if>
+            <if test="mgr_team_list != null">
+                mgr_team_list = #{mgrTeamList},
+            </if>
+            <if test="mgr_team_list != null">
+                mgr_team_list = #{team},
+            </if>
+            <if test="DID != null">
+                DID = #{DID},
+            </if>
+            <if test="personal_type != null">
+                personal_type = #{personalType},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="t_zone != null">
+                t_zone = #{tZone},
+            </if>
+            <if test="language != null">
+                language = #{language},
+            </if>
+            <if test="manager_of_team != null">
+                manager_of_team = #{managerOfTeam},
+            </if>
+            <if test="telephone_number != null">
+                telephone_number = #{telephoneNumber},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+
+    </update>
+
+    <select id="filterAvailableUser" resultType="com.alvaria.datareuse.entity.User">
+        select * from user where role = #{role} and id not in (select user_id from user_status where org = #{org})
+        <if test="inIDs != null and inIDs.size() > 0">
+            <foreach collection="inIDs" item="itemList" open=" and id in (" separator="," close=")">
+            #{itemList}
+            </foreach>
+        </if>
+    </select>
+</mapper>

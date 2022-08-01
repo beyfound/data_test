@@ -1,0 +1,186 @@
+package com.alvaria.datareuse.service;
+
+import com.alvaria.datareuse.dao.UserMapper;
+import com.alvaria.datareuse.entity.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+@Transactional
+public class UserService {
+
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserStatusService userStatusService;
+
+    @Autowired
+    private UserTagService userTagService;
+
+    @Autowired
+    private StationService stationService;
+
+    public List<User> getAll() {
+        return userMapper.findAll();
+    }
+
+    public int saveUser(User user) {
+        if (user.getId() == null) {
+            return userMapper.insertUser(user);
+        } else {
+            return userMapper.update(user);
+        }
+    }
+
+    public User getUserById(Integer id) {
+        return userMapper.getUserById(id);
+    }
+
+    public User getUserByEmail(String emailPrefix) {
+        return userMapper.getUserByEmail(emailPrefix);
+    }
+
+    public int deleteUserById(Integer id) {
+        return userMapper.deleteById(id);
+    }
+
+    public int deleteUserByEmail(String emailPrefix) {
+        return userMapper.deleteByEmail(emailPrefix);
+    }
+
+    public int deleteUsers(Integer[] ids) {
+        return userMapper.deleteByIds(ids);
+    }
+
+    public User getUserByIdentify(String identify) {
+        return userMapper.getUserByIdentity(identify);
+    }
+
+    public ResponseResult applyOneUser(ConditionModel conditionModel) throws Exception {
+        String role = conditionModel.getRole();
+        String org = conditionModel.getOrg();
+        String[] tags = conditionModel.getTags();
+        String testCase = conditionModel.getTestCase();
+        String uuid = UUID.randomUUID().toString();
+        String identity = conditionModel.getIdentity();
+        String team = conditionModel.getTeam();
+        boolean needStation = conditionModel.isNeedStation();
+
+        List<User> availableUsers = new ArrayList<>();
+        if (role == null || role.trim().length() == 0) {
+            throw new Exception("Search condition error, please pass right 'role' parameter");
+        }
+
+        if (org == null || org.trim().length() == 0) {
+            throw new Exception("Search condition error, please pass right 'org' parameter");
+        }
+
+        List<User> filteredUserList = new ArrayList<>();
+
+        //If 'identity' string exists in condition model, ignore the tags.
+        boolean isFilterUser = true;
+        if (identity != null && identity.trim().length() != 0) {
+            User user = getUserByIdentify(identity);
+            if (user != null)
+                filteredUserList.add(user);
+        } else if ((tags != null && tags.length != 0) || (team != null && team.trim().length() != 0)) {
+            List<User> tagsUsers = null;
+            List<User> teamUsers = null;
+            if (tags != null && tags.length != 0) {
+                tagsUsers = userTagService.getUserByTags(tags);
+            }
+
+            if (team != null && team.trim().length() != 0) {
+                teamUsers = userTagService.getUserByTeam(team);
+            }
+
+            if (tagsUsers != null && teamUsers == null) {
+                filteredUserList = tagsUsers;
+            } else if (tagsUsers == null && teamUsers != null) {
+                filteredUserList = teamUsers;
+            } else if (tagsUsers != null && teamUsers != null) {
+                List<User> finalTeamUsers = teamUsers;
+                filteredUserList = tagsUsers.stream().filter(user -> finalTeamUsers.contains(user)).collect(Collectors.toList());
+            }
+
+        } else {
+            isFilterUser = false;
+        }
+
+        if (isFilterUser && filteredUserList.isEmpty()) {
+            return new ResponseResult(-1, conditionModel, "No users are filtered out according to the tags or identity");
+        }
+
+        if (!filteredUserList.isEmpty()) {
+            List<Integer> finalUserIdsByTagOrIdentity = filteredUserList.stream().map(user -> user.getId()).collect(Collectors.toList());
+            availableUsers = userMapper.filterAvailableUser(role, org, finalUserIdsByTagOrIdentity);
+
+            if (availableUsers.isEmpty())
+                return new ResponseResult(-1, filteredUserList, "The filtered users are in use or their role don't match");
+        } else {
+            availableUsers = userMapper.filterAvailableUser(role, org, null);
+        }
+
+        if (availableUsers.isEmpty()) {
+            return new ResponseResult(-1, "", "Didn't find available users, please adjust search condition");
+        } else {
+            Random random = new Random();
+            boolean applySuccess = false;
+            User userApplyTo = new User();
+            String statiionId = null;
+            try {
+                while (!applySuccess) {
+
+                    userApplyTo = availableUsers.get(random.nextInt(availableUsers.size()));
+                    UserStatus userStatus = new UserStatus(org, userApplyTo.getId(), null, uuid, testCase);
+
+                    if (userStatusService.applyUserIfNotExist(userStatus) == 1) {
+
+                        if (needStation) {
+                            statiionId = stationService.getIdleStationIdByOrg(org);
+                            if (statiionId == null)
+                                return new ResponseResult(-1, "", "Didn't find available station on org: " + org);
+                            userApplyTo.setStation(statiionId);
+                            userStatus.setStation(statiionId);
+                            userStatusService.updateStation(userStatus);
+                        }
+
+                        userStatus.setUser(userApplyTo);
+                        return new ResponseResult(0, userStatus, "Apply user successfully.");
+                    }
+
+                    availableUsers.remove(userApplyTo);
+                }
+            } catch (IllegalArgumentException e) {
+                return new ResponseResult(-1, "", "Didn't find available users, please adjust search condition: " + e);
+            }
+            return new ResponseResult(-1, "", "Didn't find available users, please adjust search condition");
+        }
+
+    }
+
+    public int insertUsers(List<User> list) {
+        return userMapper.insertUsers(list);
+    }
+
+    public List<User> findUserIdsByRole(String role) {
+        return userMapper.findAllByRole(role);
+    }
+
+    public List<User> selectPage(Integer pageNum, Integer pageSize) {
+        return userMapper.selectPage(pageNum, pageSize);
+    }
+
+    public Integer selectTotal() {
+        return userMapper.selectTotal();
+    }
+}
