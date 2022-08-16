@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+mybatis是使用接口动态代理
+-->
+<mapper namespace="com.alvaria.datareuse.dao.WorkTypeMapper">
+
+    <insert id="insertWorkTypes" >
+        INSERT into `work_type` (`work_type_name`, `type`)
+        values
+        <foreach collection="list" item="wt" separator=",">
+            (#{wt.workTypeName},#{wt.type})
+        </foreach>
+    </insert>
+
+    <insert id="insertWorkType" parameterType="com.alvaria.datareuse.entity.WorkType" useGeneratedKeys = "true" keyProperty = "id">
+        INSERT into `work_type` (`work_type_name`, `type`)
+        values
+            (#{wt.workTypeName},#{wt.type})
+    </insert>
+
+    <update id="update" >
+        UPDATE `work_type`
+        <set >
+            <if test="workTypeName != null">
+                work_type = #{workTypeName},
+            </if>
+            <if test="type != null">
+                type = #{type}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+
+    </update>
+</mapper>

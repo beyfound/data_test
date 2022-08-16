@@ -32,7 +32,7 @@ public interface UserMapper {
     @Select("select * from user where identity = #{identify}")
     User getUserByIdentity(String identify);
 
-    List<User> filterAvailableUser(String role, String org, @Param("inIDs") List<Integer> inIDs);
+    List<User> filterAvailableUser(String role, String org, boolean mtData, @Param("inIDs") List<Integer> inIDs);
 
     @Select("select * from user where email = #{email}")
     User getUserByEmail(String email);

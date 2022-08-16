@@ -36,6 +36,10 @@ public class UserStatusService {
         return userStatusMapper.findStatusByUserId(userId);
     }
 
+    public UserStatus getStatusByUUID(String uuid) {
+        return userStatusMapper.getStatusByUUID(uuid);
+    }
+
     public List<UserStatus> getAllStatus() {
         return userStatusMapper.findAllStatus();
     }
@@ -51,5 +55,14 @@ public class UserStatusService {
 
     public int updateStation(UserStatus userStatus) {
         return userStatusMapper.updateStation(userStatus);
+    }
+
+    public int releaseUserList(List<String> uuids) {
+        int i = 0;
+        for (String uuid : uuids) {
+            i += releaseUserByUUID(uuid);
+        }
+
+        return i;
     }
 }

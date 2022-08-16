@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 @CrossOrigin
 @Api(tags = "User controller")
 public class UserController {
@@ -43,61 +43,70 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public ResponseResult getUserById(@PathVariable int id) {
         User user = userService.getUserById(id);
         return new ResponseResult(0, user, "");
     }
 
-    @GetMapping("/user/email")
+    @GetMapping("/email")
     public ResponseResult getUerByEmail(String email) {
         return new ResponseResult(0, userService.getUserByEmail(email), "");
     }
 
-    @GetMapping("/user/idty")
+    @GetMapping("/idty")
     public ResponseResult getUerByIdentity(@RequestParam String idty) {
         return new ResponseResult(0, userService.getUserByIdentify(idty), "");
     }
 
-    @GetMapping("/user/all")
+    @GetMapping("/all")
     public ResponseResult getAllUser() {
         List<User> users = userService.getAll();
         return new ResponseResult(0, users, "");
     }
 
-    @PostMapping("/user")
+    @PostMapping("/save")
     public ResponseResult saveUser(@RequestBody User user) {
         int code = userService.saveUser(user);
         return new ResponseResult(code, user, code > 0 ? "Save successfully" : "Save failed");
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping("/delete")
     public ResponseResult deleteUsers(@RequestParam(value = "ids[]") Integer[] ids) {
         int row = userService.deleteUsers(ids);
         return new ResponseResult(row > 0 ? row : -1, "", row > 0 ? "Delete successfully" : "Delete failed");
     }
 
-    @DeleteMapping("/user/{userId}")
+    @DeleteMapping("/{userId}")
     public ResponseResult deleteUserById(@PathVariable Integer userId) {
         int row = userService.deleteUserById(userId);
         return new ResponseResult(row > 0 ? row : -1, "", row > 0 ? "Delete successfully" : "Delete failed");
     }
 
-    @DeleteMapping("/user/{email}")
+    @DeleteMapping("/{email}")
     public ResponseResult deleteUserByEmail(@PathVariable String email) {
         int row = userService.deleteUserByEmail(email);
         return new ResponseResult(row > 0 ? row : -1, "", row > 0 ? "Delete successfully" : "Delete failed");
     }
 
-    @PostMapping("/user/apply")
+    @PostMapping("/apply")
     public ResponseResult applyOneUser(@RequestBody ConditionModel conditionModel) throws Exception {
         return userService.applyOneUser(conditionModel);
     }
 
-    @DeleteMapping("/user/release/{uuid}")
+    @DeleteMapping("/release/{uuid}")
     public ResponseResult releaseOneUser(@PathVariable String uuid) {
         int row = userStatusService.releaseUserByUUID(uuid);
         return new ResponseResult(row > 0 ? row : -1, "", row > 0 ? "Release user successfully" : "Release user failed");
+    }
+
+    @DeleteMapping("/release/uuids")
+    public ResponseResult releaseUserList(@RequestBody List<String> uuids) {
+        if (uuids == null || uuids.isEmpty()) {
+            return new ResponseResult(-1, uuids, "parameter error");
+        }
+
+        return new ResponseResult(0, "effect " + userStatusService.releaseUserList(uuids) + " rows", "Release successfully");
     }
 
     @GetMapping("/{userId}/tag")
@@ -105,9 +114,9 @@ public class UserController {
         return new ResponseResult(0, userTagService.getUserTagsById(userId), "");
     }
 
-    @GetMapping("/user/tag")
+    @GetMapping("/tag")
     public ResponseResult getUserByTags(@RequestParam List<String> tags) {
-        return new ResponseResult(0, userTagService.getUserByTags(new String['r']), "");
+        return new ResponseResult(0, userTagService.getUserByTags(new String['r'], false), "");
     }
 
     @GetMapping("/status/{userId}")

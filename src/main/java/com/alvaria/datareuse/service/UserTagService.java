@@ -17,18 +17,18 @@ public class UserTagService {
     @Autowired
     private UserTagMapper userTagMapper;
 
-    public List<User> getUserByTags(String[] tags) {
-        if(tags == null || tags.length == 0){
+    public List<User> getUserByTags(String[] tags, boolean mtData) {
+        if (tags == null || tags.length == 0) {
             return new ArrayList<User>();
         }
-        return userTagMapper.findUserListByTags(tags);
+        return userTagMapper.findUserListByTags(tags, mtData);
     }
 
     public String getUserTagsById(Integer userId) {
         return userTagMapper.findUserTagsById(userId);
     }
 
-    public List<User> getUserByTeam(String team) {
-        return userTagMapper.findUserByTeam(team);
+    public List<User> getUserByTeam(String team, boolean mtData) {
+        return userTagMapper.findUserByTeam(team, mtData);
     }
 }

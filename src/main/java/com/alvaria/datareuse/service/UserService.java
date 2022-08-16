@@ -74,6 +74,8 @@ public class UserService {
         String identity = conditionModel.getIdentity();
         String team = conditionModel.getTeam();
         boolean needStation = conditionModel.isNeedStation();
+        boolean specificTeam = team != null && team.trim().length() != 0 ? true : false;
+        boolean mtData = conditionModel.isMtData();
 
         List<User> availableUsers = new ArrayList<>();
         if (role == null || role.trim().length() == 0) {
@@ -92,15 +94,15 @@ public class UserService {
             User user = getUserByIdentify(identity);
             if (user != null)
                 filteredUserList.add(user);
-        } else if ((tags != null && tags.length != 0) || (team != null && team.trim().length() != 0)) {
+        } else if ((tags != null && tags.length != 0) || specificTeam) {
             List<User> tagsUsers = null;
             List<User> teamUsers = null;
             if (tags != null && tags.length != 0) {
-                tagsUsers = userTagService.getUserByTags(tags);
+                tagsUsers = userTagService.getUserByTags(tags, mtData);
             }
 
-            if (team != null && team.trim().length() != 0) {
-                teamUsers = userTagService.getUserByTeam(team);
+            if (specificTeam) {
+                teamUsers = userTagService.getUserByTeam(team, mtData);
             }
 
             if (tagsUsers != null && teamUsers == null) {
@@ -122,12 +124,12 @@ public class UserService {
 
         if (!filteredUserList.isEmpty()) {
             List<Integer> finalUserIdsByTagOrIdentity = filteredUserList.stream().map(user -> user.getId()).collect(Collectors.toList());
-            availableUsers = userMapper.filterAvailableUser(role, org, finalUserIdsByTagOrIdentity);
+            availableUsers = userMapper.filterAvailableUser(role, org, mtData, finalUserIdsByTagOrIdentity);
 
             if (availableUsers.isEmpty())
                 return new ResponseResult(-1, filteredUserList, "The filtered users are in use or their role don't match");
         } else {
-            availableUsers = userMapper.filterAvailableUser(role, org, null);
+            availableUsers = userMapper.filterAvailableUser(role, org, mtData, null);
         }
 
         if (availableUsers.isEmpty()) {

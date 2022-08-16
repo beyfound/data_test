@@ -11,4 +11,6 @@ public class ConditionModel {
     private String testCase;
     private String team;
     private boolean needStation;
+    private String type;
+    private boolean mtData;
 }

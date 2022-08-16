@@ -1,6 +1,7 @@
 package com.alvaria.datareuse.service;
 
 import com.alvaria.datareuse.entity.User;
+import com.alvaria.datareuse.entity.WorkType;
 import com.csvreader.CsvReader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,4 +53,44 @@ public class UploadCSVService {
 
         return userInfos;
     }
+
+    public List<WorkType> getWorkTypesFromCSV(MultipartFile multipartFile) {
+        String line = "";
+        String splitBy = ",";
+        List<WorkType> workTypesInfos = new ArrayList<>();
+        String wTType = "";
+        ArrayList<String> strList = null;
+        CsvReader reader = null;
+        try {
+            ArrayList<String[]> arrList = new ArrayList<String[]>();
+            reader = new CsvReader(multipartFile.getInputStream(), ',', Charset.forName("UTF-8"));
+            while (reader.readRecord()) {
+                arrList.add(reader.getValues());
+            }
+
+            if (multipartFile.getOriginalFilename().contains("InboundVoiceWorkTypes")) {
+                wTType = "InboundVoiceWTs";
+            } else if (multipartFile.getOriginalFilename().contains("InboundSMSWorkTypes")) {
+                wTType = "InboundSMSWTs";
+            } else if (multipartFile.getOriginalFilename().contains("InboundChatWorkTypes")) {
+                wTType = "ChatWTs";
+            } else if (multipartFile.getOriginalFilename().contains("InboundEmailWorkTypes")) {
+                wTType = "InboundEmailWTs";
+            }
+
+            for (int row = 1; row < arrList.size(); row++) {
+                WorkType workType = new WorkType();
+                workType.setWorkTypeName(arrList.get(row)[0]);
+                workType.setType(wTType);
+                workTypesInfos.add(workType);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            reader.close();
+        }
+
+        return workTypesInfos;
+    }
+
 }

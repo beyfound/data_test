@@ -47,8 +47,8 @@ mybatis是使用接口动态代理
             <if test="email != null">
                 email = #{email},
             </if>
-            <if test="displayName != null">
-                display_name = #{displayName},
+            <if test="display != null">
+                display = #{display},
             </if>
             <if test="role != null">
                 role = #{role},
@@ -62,47 +62,47 @@ mybatis是使用接口动态代理
             <if test="password != null">
                 password = #{password},
             </if>
-            <if test="c_password != null">
+            <if test="cPassword != null">
                 c_password = #{cPassword},
             </if>
             <if test="station != null">
                 station = #{station},
             </if>
-            <if test="user_name != null">
+            <if test="userName != null">
                 user_name = #{userName},
             </if>
-            <if test="first_name != null">
+            <if test="firstName != null">
                 first_name = #{firstName},
             </if>
-            <if test="last_name != null">
+            <if test="lastName != null">
                 last_name = #{lastName},
             </if>
-            <if test="mgr_team_list != null">
+            <if test="mgrTeamList != null">
                 mgr_team_list = #{mgrTeamList},
             </if>
-            <if test="mgr_team_list != null">
-                mgr_team_list = #{team},
+            <if test="team != null">
+                team = #{team},
             </if>
             <if test="DID != null">
                 DID = #{DID},
             </if>
-            <if test="personal_type != null">
+            <if test="personalType != null">
                 personal_type = #{personalType},
             </if>
             <if test="name != null">
                 name = #{name},
             </if>
-            <if test="t_zone != null">
+            <if test="tZone != null">
                 t_zone = #{tZone},
             </if>
             <if test="language != null">
                 language = #{language},
             </if>
-            <if test="manager_of_team != null">
+            <if test="managerOfTeam != null">
                 manager_of_team = #{managerOfTeam},
             </if>
-            <if test="telephone_number != null">
-                telephone_number = #{telephoneNumber},
+            <if test="telephoneNumber != null">
+                telephone_number = #{telephoneNumber}
             </if>
         </set>
         <where>
@@ -112,7 +112,7 @@ mybatis是使用接口动态代理
     </update>
 
     <select id="filterAvailableUser" resultType="com.alvaria.datareuse.entity.User">
-        select * from user where role = #{role} and id not in (select user_id from user_status where org = #{org})
+        select * from user where role = #{role} and mt_data = #{mtData} and id not in (select user_id from user_inuse where org = #{org})
         <if test="inIDs != null and inIDs.size() > 0">
             <foreach collection="inIDs" item="itemList" open=" and id in (" separator="," close=")">
             #{itemList}

@@ -11,11 +11,11 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 @Mapper
 public interface UserTagMapper {
-    List<User> findUserListByTags(String[] tags);
+    List<User> findUserListByTags(String[] tags, boolean mtData);
 
     @Select("select tags from `user` where id = #{userId}")
     String findUserTagsById(Integer userId);
 
-    @Select("select * from `user` where team = #{team}")
-    List<User>  findUserByTeam(String team);
+    @Select("select * from `user` where team = #{team} and mt_data=#{mtData}")
+    List<User>  findUserByTeam(String team, boolean mtData);
 }

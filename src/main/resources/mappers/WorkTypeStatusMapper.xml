@@ -5,7 +5,7 @@
 <!--
 mybatis是使用接口动态代理
 -->
-<mapper namespace="com.alvaria.datareuse.dao.UserStatusMapper">
+<mapper namespace="com.alvaria.datareuse.dao.WorkTypeStatusMapper">
     <resultMap id="userStatusDetail" type="com.alvaria.datareuse.entity.UserStatus">
         <id column="id" property="id"/>
 
@@ -29,19 +29,19 @@ mybatis是使用接口动态代理
     <select id="findStatusByUserIdAndOrg" resultMap="userStatusDetail">
         select
             s.org, s.start_time, s.user_id user_id, s.uuid, s.test_case, s.id, u.email_prefix, u.display_name, u.role
-        from user_inuse s inner join user u on s.user_id = u.id and s.org =#{org} and s.user_id=#{userId}
+        from user_status s inner join user u on s.user_id = u.id and s.org =#{org} and s.user_id=#{userId}
     </select>
 
     <select id="findStatusByUserId" resultMap="userStatusDetail">
         select
             s.org, s.start_time, s.user_id user_id, s.uuid, s.test_case, s.id, u.email_prefix, u.display_name, u.role
-        from user_inuse s inner join `user` u on s.user_id = u.id and s.user_id=#{userId}
+        from user_status s inner join `user` u on s.user_id = u.id and s.user_id=#{userId}
     </select>
 
     <select id="findAllStatus" resultMap="userStatusDetail">
         select
             s.org, s.start_time, s.user_id user_id, s.uuid, s.test_case, s.id, u.email_prefix, u.display_name, u.role
-        from user_inuse s inner join user u on s.user_id
+        from user_status s inner join user u on s.user_id
     </select>
 
     <update id="updateStation" >
@@ -58,7 +58,7 @@ mybatis是使用接口动态代理
     </update>
 
     <delete id="removeStatusByUUIDList">
-        update `user_status` set del_flag = 1 where
+        update work_type_status set del_flag = 1 where
         <foreach collection="list" item="uuid"  separator=" or ">
             uuid = #{uuid}
         </foreach>
