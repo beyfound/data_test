@@ -58,7 +58,7 @@ mybatis是使用接口动态代理
     </update>
 
     <delete id="removeStatusByUUIDList">
-        update work_type_status set del_flag = 1 where
+        delete from work_type_status where
         <foreach collection="list" item="uuid"  separator=" or ">
             uuid = #{uuid}
         </foreach>

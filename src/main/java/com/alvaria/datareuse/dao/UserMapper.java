@@ -42,4 +42,6 @@ public interface UserMapper {
 
     @Select("select count(*) from user")
     Integer selectTotal();
+
+    User getOneAvailableUser(String role, String org, String team, String identity, @Param("array") String[] tags, boolean mtData, @Param("IDs") List<Integer> exclusionIDs);
 }

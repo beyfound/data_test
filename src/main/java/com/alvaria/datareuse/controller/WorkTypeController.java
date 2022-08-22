@@ -55,6 +55,11 @@ public class WorkTypeController {
         return new ResponseResult(0, "effect " + workTypeStatusService.releaseWorkType(uuid) + " rows", "Release successfully");
     }
 
+    @DeleteMapping("/release/{testCase}")
+    public ResponseResult releaseWorkTypeByTestCase(@PathVariable String testCase) {
+        return new ResponseResult(0, "effect " + workTypeStatusService.releaseWorkTypeByTestCase(testCase) + " rows", "Release successfully");
+    }
+
     @DeleteMapping("/release/uuids")
     public ResponseResult releaseWorkTypeByList(@RequestBody List<String> uuids) {
         if (uuids == null || uuids.isEmpty()) {

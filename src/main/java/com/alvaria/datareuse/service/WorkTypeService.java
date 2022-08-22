@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class WorkTypeService {
-    public static List<String> WTTypeList = Arrays.asList("InboundVoiceWTs", "InboundSMSWTs", "ChatWTs", "InboundEmailWTs","OutreachVoiceWTs","OutreachSMSWTs");
+    public static List<String> WTTypeList = Arrays.asList("InboundVoiceWTs", "InboundSMSWTs", "ChatWTs", "InboundEmailWTs", "OutreachVoiceWTs", "OutreachSMSWTs");
 
     @Autowired
     private WorkTypeMapper workTypeMapper;

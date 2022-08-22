@@ -112,11 +112,43 @@ mybatis是使用接口动态代理
     </update>
 
     <select id="filterAvailableUser" resultType="com.alvaria.datareuse.entity.User">
-        select * from user where role = #{role} and mt_data = #{mtData} and id not in (select user_id from user_inuse where org = #{org})
+        select * from user where role = #{role} and mt_data = #{mtData} and id not in (select user_id from user_status where org = #{org})
         <if test="inIDs != null and inIDs.size() > 0">
             <foreach collection="inIDs" item="itemList" open=" and id in (" separator="," close=")">
             #{itemList}
             </foreach>
         </if>
+    </select>
+
+    <select id="getOneAvailableUser" resultType="com.alvaria.datareuse.entity.User">
+        select * from user where role = #{role} and mt_data = #{mtData}
+        <if test="team!=null">
+            and team = #{team}
+        </if>
+        <choose>
+            <when test="identity!=null">
+                and identity = #{identity}
+            </when>
+            <otherwise>
+                and identity is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="array!=null">
+                <foreach collection="array" item="tag" separator="and" open="and">
+                    tags LIKE CONCAT('%',#{tag},'%')
+                </foreach>
+            </when>
+            <otherwise>
+                and tags is null
+            </otherwise>
+        </choose>
+         and id not in (select user_id from user_status where org = #{org})
+        <if test="IDs != null and IDs.size() > 0">
+            <foreach collection="IDs" item="itemList" open=" and id not in (" separator="," close=")">
+                #{itemList}
+            </foreach>
+        </if>
+          limit 1
     </select>
 </mapper>

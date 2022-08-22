@@ -21,6 +21,6 @@ public interface WorkTypeMapper {
     @Select("select count(*) from work_type")
     Integer selectTotal();
 
-    @Select("select * from work_type where type = #{type} and mt_data=#{mtData} and id not in (select work_type_id from wt_inuse where org =#{org})")
+    @Select("select * from work_type where type = #{type} and mt_data=#{mtData} and id not in (select work_type_id from work_type_status where org =#{org})")
     List<WorkType> filterAvailableWorkType(String type, String org, boolean mtData);
 }

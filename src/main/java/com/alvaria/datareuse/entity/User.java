@@ -39,4 +39,5 @@ public class User {
     private String language;
     private String managerOfTeam;
     private String telephoneNumber;
+    private boolean mtData;
 }

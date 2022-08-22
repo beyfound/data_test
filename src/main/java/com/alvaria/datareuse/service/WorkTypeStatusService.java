@@ -25,4 +25,8 @@ public class WorkTypeStatusService {
     public int releaseWorkType(String uuid) {
         return workTypeStatusMapper.removeStatusByUUID(uuid);
     }
+
+    public int releaseWorkTypeByTestCase(String testCase) {
+        return workTypeStatusMapper.removeStatusByTestCase(testCase);
+    }
 }

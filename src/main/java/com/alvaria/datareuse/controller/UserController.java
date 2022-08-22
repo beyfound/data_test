@@ -97,7 +97,13 @@ public class UserController {
     @DeleteMapping("/release/{uuid}")
     public ResponseResult releaseOneUser(@PathVariable String uuid) {
         int row = userStatusService.releaseUserByUUID(uuid);
-        return new ResponseResult(row > 0 ? row : -1, "", row > 0 ? "Release user successfully" : "Release user failed");
+        return new ResponseResult(0, "", "Release work type successfully, effect" + row + "row(s)");
+    }
+
+    @DeleteMapping("/release/{testCase}")
+    public ResponseResult releaseUserByTestCase(@PathVariable String testCase) {
+        int row = userStatusService.releaseUserByTestCase(testCase);
+        return new ResponseResult(0, "", "Release work type successfully, effect" + row + "row(s)");
     }
 
     @DeleteMapping("/release/uuids")
@@ -139,14 +145,14 @@ public class UserController {
 
     //分页查询接口
     @GetMapping("/page")
-    public Map<String, Object> findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         pageNum = (pageNum - 1) * pageSize;
         List<User> data = userService.selectPage(pageNum, pageSize);
         Integer total = userService.selectTotal();
         Map<String, Object> res = new HashMap<>();
         res.put("data", data);
         res.put("total", total);
-        return res;
+        return new ResponseResult(0,res,"");
     }
 
 //    @PostMapping("/login")

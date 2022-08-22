@@ -17,7 +17,7 @@ mybatis是使用接口动态代理
 <!--    </select>-->
 
     <select id="findUserListByTags" resultType="com.alvaria.datareuse.entity.User">
-        select * from `user` where mt_data=#{mtData}
+        select * from `user` where mt_data=#{mtData} and
         <foreach collection="array" item="tag" separator=" AND ">
             tags LIKE CONCAT('%',#{tag},'%')
         </foreach>

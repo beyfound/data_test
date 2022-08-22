@@ -45,12 +45,11 @@ public class UserStatusService {
     }
 
     public int releaseUserByUUID(String uuid) {
-        String station = userStatusMapper.getStatusStation(uuid);
-        if (station != null) {
-            stationService.releaseStation(station);
-        }
-
         return userStatusMapper.removeStatusByUUID(uuid);
+    }
+
+    public int releaseUserByTestCase(String testCase) {
+        return userStatusMapper.removeStatusByTestCase(testCase);
     }
 
     public int updateStation(UserStatus userStatus) {
@@ -58,11 +57,6 @@ public class UserStatusService {
     }
 
     public int releaseUserList(List<String> uuids) {
-        int i = 0;
-        for (String uuid : uuids) {
-            i += releaseUserByUUID(uuid);
-        }
-
-        return i;
+        return userStatusMapper.removeStatusByUUIDList(uuids);
     }
 }
