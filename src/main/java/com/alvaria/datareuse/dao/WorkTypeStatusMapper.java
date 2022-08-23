@@ -8,8 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface WorkTypeStatusMapper {
-//    @Select("select user_id from user_status where org = #{org}")
-//    List<Integer> findInUsingStatusByOrg(String org);
 
     @Insert("INSERT INTO work_type_status(work_type_id, org, `uuid`, test_case, `work_type_name`)\n" +
             "SELECT #{workTypeId}, #{org}, #{uuid}, #{testCase}, #{workTypeName} FROM DUAL \n" +
@@ -17,7 +15,6 @@ public interface WorkTypeStatusMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int applyWorkTypeIfNotExist(WorkTypeStatus workTypeStatus);
 
-    //    UserStatus findStatusByUserIdAndOrg(Integer userId, String org);
     @Delete("delete from work_type_status where uuid=#{uuid}")
     int removeStatusByUUID(String uuid);
 
@@ -25,11 +22,5 @@ public interface WorkTypeStatusMapper {
 
     @Delete("delete from work_type_status where test_case=#{testCase}")
     int removeStatusByTestCase(String testCase);
-//
-//    List<UserStatus> findStatusByUserId(Integer userId);
-//
-//    List<UserStatus> findAllStatus();
-//
-//    int updateStation(UserStatus userStatus);
 
 }
