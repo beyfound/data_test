@@ -16,7 +16,6 @@ public class WorkTypeStatus {
     private String org;
     @JsonIgnore
     private Integer workTypeId;
-    @JsonIgnore
     private Date startTime;
     private String uuid;
     private String testCase;

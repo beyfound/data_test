@@ -4,6 +4,7 @@ import com.alvaria.datareuse.dao.StationMapper;
 import com.alvaria.datareuse.dao.UserTagMapper;
 import com.alvaria.datareuse.entity.Station;
 import com.alvaria.datareuse.entity.User;
+import com.alvaria.datareuse.entity.WorkType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,4 +33,19 @@ public class StationService {
         return null;
     }
 
+    public List<Station> selectPage(Integer pageNum, Integer pageSize) {
+        return stationMapper.selectPage(pageNum, pageSize);
+    }
+
+    public Integer selectTotal() {
+        return stationMapper.selectTotal();
+    }
+
+    public Integer selectInUseTotal() {
+        return stationMapper.selectInUseTotal();
+    }
+
+    public List<Station> selectInUsePage(Integer pageNum, Integer pageSize) {
+        return stationMapper.selectInUsePage(pageNum, pageSize);
+    }
 }

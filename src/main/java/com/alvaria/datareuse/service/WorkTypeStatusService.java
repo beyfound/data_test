@@ -29,4 +29,12 @@ public class WorkTypeStatusService {
     public int releaseWorkTypeByTestCase(String testCase) {
         return workTypeStatusMapper.removeStatusByTestCase(testCase);
     }
+
+    public List<WorkTypeStatus> selectInUsePage(Integer pageNum, Integer pageSize) {
+        return workTypeStatusMapper.selectInUsePage(pageNum, pageSize);
+    }
+
+    public Integer selectTotal() {
+        return workTypeStatusMapper.selectTotal();
+    }
 }

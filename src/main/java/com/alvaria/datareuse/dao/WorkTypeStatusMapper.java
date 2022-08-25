@@ -1,5 +1,6 @@
 package com.alvaria.datareuse.dao;
 
+import com.alvaria.datareuse.entity.Station;
 import com.alvaria.datareuse.entity.UserStatus;
 import com.alvaria.datareuse.entity.WorkTypeStatus;
 import org.apache.ibatis.annotations.*;
@@ -22,5 +23,11 @@ public interface WorkTypeStatusMapper {
 
     @Delete("delete from work_type_status where test_case=#{testCase}")
     int removeStatusByTestCase(String testCase);
+
+    @Select("select * from work_type_status limit #{pageNum}, #{pageSize}")
+    List<WorkTypeStatus> selectInUsePage(Integer pageNum, Integer pageSize);
+
+    @Select("select count(*) from work_type_status")
+    Integer selectTotal();
 
 }

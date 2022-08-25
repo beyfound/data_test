@@ -155,6 +155,17 @@ public class UserController {
         return new ResponseResult(0,res,"");
     }
 
+    @GetMapping("/status/page")
+    public ResponseResult findInUsePage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        pageNum = (pageNum - 1) * pageSize;
+        List<UserStatus> data = userStatusService.selectInusePage(pageNum, pageSize);
+        Integer total = userStatusService.selectTotal();
+        Map<String, Object> res = new HashMap<>();
+        res.put("data", data);
+        res.put("total", total);
+        return new ResponseResult(0,res,"");
+    }
+
 //    @PostMapping("/login")
 //    public boolean login(@RequestBody Login login) {
 //        JSONObject json = new JSONObject();

@@ -142,7 +142,7 @@ public class UserService {
                 return new ResponseResult(-1, conditionModel, "Didn't find available users, please adjust search condition");
             }
 
-            UserStatus userStatus = new UserStatus(org, userApplyTo.getId(), null, uuid, testCase);
+            UserStatus userStatus = new UserStatus(org, userApplyTo.getId(),userApplyTo.getEmail(), null, uuid, testCase);
             if (userStatusService.applyUserIfNotExist(userStatus) == 1) {
                 if (needStation) {
                     stationId = stationService.getIdleStationIdByOrg(org);

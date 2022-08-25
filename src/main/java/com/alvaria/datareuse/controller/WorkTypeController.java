@@ -1,9 +1,6 @@
 package com.alvaria.datareuse.controller;
 
-import com.alvaria.datareuse.entity.ConditionModel;
-import com.alvaria.datareuse.entity.ResponseResult;
-import com.alvaria.datareuse.entity.User;
-import com.alvaria.datareuse.entity.WorkType;
+import com.alvaria.datareuse.entity.*;
 import com.alvaria.datareuse.service.UploadCSVService;
 import com.alvaria.datareuse.service.WorkTypeService;
 import com.alvaria.datareuse.service.WorkTypeStatusService;
@@ -13,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/work_type")
@@ -28,6 +27,28 @@ public class WorkTypeController {
 
     @Autowired
     private UploadCSVService uploadCSVService;
+
+    @GetMapping("/page")
+    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        pageNum = (pageNum - 1) * pageSize;
+        List<WorkType> data = workTypeService.selectPage(pageNum, pageSize);
+        Integer total = workTypeService.selectTotal();
+        Map<String, Object> res = new HashMap<>();
+        res.put("data", data);
+        res.put("total", total);
+        return new ResponseResult(0,res,"");
+    }
+
+    @GetMapping("/status/page")
+    public ResponseResult findInUsePage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        pageNum = (pageNum - 1) * pageSize;
+        List<WorkTypeStatus> data = workTypeStatusService.selectInUsePage(pageNum, pageSize);
+        Integer total = workTypeStatusService.selectTotal();
+        Map<String, Object> res = new HashMap<>();
+        res.put("data", data);
+        res.put("total", total);
+        return new ResponseResult(0,res,"");
+    }
 
     @PostMapping("/save")
     public ResponseResult SaveOrUpdate(WorkType workType) {

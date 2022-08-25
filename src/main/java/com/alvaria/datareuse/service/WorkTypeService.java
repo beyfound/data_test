@@ -71,4 +71,11 @@ public class WorkTypeService {
         return new ResponseResult(-1, "", "Apply work type failed.");
     }
 
+    public List<WorkType> selectPage(Integer pageNum, Integer pageSize) {
+        return workTypeMapper.selectPage(pageNum, pageSize);
+    }
+
+    public Integer selectTotal() {
+        return workTypeMapper.selectTotal();
+    }
 }

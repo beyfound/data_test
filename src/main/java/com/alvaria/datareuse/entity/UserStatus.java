@@ -16,16 +16,17 @@ public class UserStatus {
     private String org;
     @JsonIgnore
     private int userId;
-    @JsonIgnore
+    private String email;
     private Date startTime;
     private String uuid;
     private String testCase;
     private User user;
     private String station;
 
-    public UserStatus(String org, int userId, Date startTime, String uuid, String testCase) {
+    public UserStatus(String org, int userId, String email, Date startTime, String uuid, String testCase) {
         this.org = org;
         this.userId = userId;
+        this.email = email;
         this.startTime = startTime;
         this.uuid = uuid;
         this.testCase = testCase;

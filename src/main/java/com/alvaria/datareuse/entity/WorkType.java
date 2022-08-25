@@ -11,4 +11,5 @@ public class WorkType {
     private Integer id;
     private String workTypeName;
     private String type;
+    private String mtData;
 }

@@ -1,8 +1,10 @@
 package com.alvaria.datareuse.service;
 
 import com.alvaria.datareuse.dao.UserStatusMapper;
+import com.alvaria.datareuse.entity.User;
 import com.alvaria.datareuse.entity.UserStatus;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,5 +60,13 @@ public class UserStatusService {
 
     public int releaseUserList(List<String> uuids) {
         return userStatusMapper.removeStatusByUUIDList(uuids);
+    }
+
+    public List<UserStatus> selectInusePage(Integer pageNum, Integer pageSize) {
+        return userStatusMapper.selectInUsePage(pageNum, pageSize);
+    }
+
+    public Integer selectTotal() {
+        return userStatusMapper.selectTotal();
     }
 }

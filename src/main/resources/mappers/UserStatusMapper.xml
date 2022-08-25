@@ -65,7 +65,7 @@ mybatis是使用接口动态代理
                u.display_name,
                u.role
         from user_status s
-                 inner join user u on s.user_id
+                 inner join user u on s.user_id limit #{pageNum}, #{pageSize}
     </select>
 
     <update id="updateStation">
