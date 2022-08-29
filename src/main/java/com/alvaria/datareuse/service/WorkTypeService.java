@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class WorkTypeService {
     public static List<String> WTTypeList = Arrays.asList("InboundVoiceWTs", "InboundSMSWTs", "ChatWTs", "InboundEmailWTs", "OutreachVoiceWTs", "OutreachSMSWTs");
 
@@ -32,6 +31,7 @@ public class WorkTypeService {
         return workTypeMapper.insertWorkTypes(list);
     }
 
+    @Transactional
     public ResponseResult applyOneWorkType(ConditionModel conditionModel) {
         String type = conditionModel.getType();
         String org = conditionModel.getOrg();
@@ -77,5 +77,9 @@ public class WorkTypeService {
 
     public Integer selectTotal() {
         return workTypeMapper.selectTotal();
+    }
+
+    public List<WorkType> getAll(){
+        return workTypeMapper.findAll();
     }
 }

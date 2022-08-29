@@ -1,19 +1,17 @@
 package com.alvaria.datareuse.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alvaria.datareuse.dao.UserMapper;
 import com.alvaria.datareuse.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class UserService {
 
 
@@ -42,6 +40,7 @@ public class UserService {
     }
 
     public User getUserById(Integer id) {
+
         return userMapper.getUserById(id);
     }
 
@@ -65,6 +64,7 @@ public class UserService {
         return userMapper.getUserByIdentity(identify);
     }
 
+    @Transactional
     public ResponseResult applyOneUser(ConditionModel conditionModel) throws Exception {
         String role = conditionModel.getRole();
         String org = conditionModel.getOrg();
@@ -142,7 +142,7 @@ public class UserService {
                 return new ResponseResult(-1, conditionModel, "Didn't find available users, please adjust search condition");
             }
 
-            UserStatus userStatus = new UserStatus(org, userApplyTo.getId(),userApplyTo.getEmail(), null, uuid, testCase);
+            UserStatus userStatus = new UserStatus(org, userApplyTo.getId(), userApplyTo.getEmail(), null, uuid, testCase);
             if (userStatusService.applyUserIfNotExist(userStatus) == 1) {
                 if (needStation) {
                     stationId = stationService.getIdleStationIdByOrg(org);
@@ -163,6 +163,7 @@ public class UserService {
         return new ResponseResult(-1, "", "Didn't find available users, please adjust search condition");
     }
 
+    @Transactional
     public int insertUsers(List<User> list) {
         return userMapper.insertUsers(list);
     }
@@ -171,11 +172,18 @@ public class UserService {
         return userMapper.findAllByRole(role);
     }
 
-    public List<User> selectPage(Integer pageNum, Integer pageSize) {
-        return userMapper.selectPage(pageNum, pageSize);
+    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize) {
+        pageNum = (pageNum - 1) * pageSize;
+        List<User> users = userMapper.selectPage(pageNum, pageSize);
+        Map<String, Object> res = new HashMap<>();
+        res.put("data", users);
+        res.put("total", userMapper.selectTotal());
+        return res;
     }
 
     public Integer selectTotal() {
         return userMapper.selectTotal();
     }
+
+
 }

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class UserStatusService {
 
     @Autowired
@@ -61,6 +60,7 @@ public class UserStatusService {
     public int releaseUserList(List<String> uuids) {
         return userStatusMapper.removeStatusByUUIDList(uuids);
     }
+
 
     public List<UserStatus> selectInusePage(Integer pageNum, Integer pageSize) {
         return userStatusMapper.selectInUsePage(pageNum, pageSize);
