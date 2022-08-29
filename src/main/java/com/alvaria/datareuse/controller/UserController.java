@@ -1,17 +1,14 @@
 package com.alvaria.datareuse.controller;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.alvaria.datareuse.entity.*;
 import com.alvaria.datareuse.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -146,7 +143,7 @@ public class UserController {
     @GetMapping("/page")
     public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
 
-        return new ResponseResult(0,userService.selectPage(pageNum,pageSize),"");
+        return new ResponseResult(0, userService.selectPage(pageNum, pageSize), "");
     }
 
     @GetMapping("/status/page")
@@ -157,7 +154,7 @@ public class UserController {
         Map<String, Object> res = new HashMap<>();
         res.put("data", data);
         res.put("total", total);
-        return new ResponseResult(0,res,"");
+        return new ResponseResult(0, res, "");
     }
 
 //    @PostMapping("/login")
