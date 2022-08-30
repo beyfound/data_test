@@ -1,5 +1,7 @@
 package com.alvaria.datareuse.entity;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,25 @@ public class User {
     private String role;
     private String identity;
     private String tags;
+    private String[] tagsArray;
+
+    public String[] getTagsArray() {
+        if (tags != null) {
+            JSONArray array = JSON.parseArray(this.tags);
+            String[] temp = new String[array.size()];
+            for (int i = 0; i < array.size(); i++) {
+                temp[i] = array.get(i).toString();
+            }
+            
+            tagsArray = temp;
+        }
+        return tagsArray;
+    }
+
+    public void setTagsArray(String[] tagsArray) {
+        this.tagsArray = tagsArray;
+    }
+
     private String password;
     private String cPassword;
     private String station;
