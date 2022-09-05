@@ -28,6 +28,7 @@ public class LoginController {
             payload.put("username", "admin");
             String token = JwtUtil.generateToken(payload);
             tokenMap.put("token", token);
+            tokenMap.put("role", "admin");
             return new ResponseResult(0,tokenMap,"Login successful");
         }
 
