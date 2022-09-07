@@ -141,13 +141,13 @@ public class UserController {
 
     //分页查询接口
     @GetMapping("/page")
-    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam String keyword) {
+    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam(required = false) String keyword) {
 
         return new ResponseResult(0, userService.selectPage(pageNum, pageSize, keyword), "");
     }
 
     @GetMapping("/status/page")
-    public ResponseResult findInUsePage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    public ResponseResult findInUsePage(@RequestParam Integer pageNum, @RequestParam() Integer pageSize) {
         pageNum = (pageNum - 1) * pageSize;
         List<UserStatus> data = userStatusService.selectInusePage(pageNum, pageSize);
         Integer total = userStatusService.selectTotal();
