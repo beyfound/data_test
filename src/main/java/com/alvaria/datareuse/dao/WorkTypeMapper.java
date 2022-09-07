@@ -30,4 +30,6 @@ public interface WorkTypeMapper {
 
     @Select("select * from work_type")
     List<WorkType> findAll();
+
+    List<WorkType> findAllByKey(String keyWord);
 }

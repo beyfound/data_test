@@ -29,14 +29,8 @@ public class WorkTypeController {
     private UploadCSVService uploadCSVService;
 
     @GetMapping("/page")
-    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        pageNum = (pageNum - 1) * pageSize;
-        List<WorkType> data = workTypeService.selectPage(pageNum, pageSize);
-        Integer total = workTypeService.selectTotal();
-        Map<String, Object> res = new HashMap<>();
-        res.put("data", data);
-        res.put("total", total);
-        return new ResponseResult(0,res,"");
+    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam(required = false) String keyWord) {
+        return new ResponseResult(0,workTypeService.selectPage(pageNum, pageSize, keyWord),"");
     }
 
     @GetMapping("/status/page")

@@ -71,8 +71,15 @@ public class WorkTypeService {
         return new ResponseResult(-1, "", "Apply work type failed.");
     }
 
-    public List<WorkType> selectPage(Integer pageNum, Integer pageSize) {
-        return workTypeMapper.selectPage(pageNum, pageSize);
+    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize,String keyWord) {
+        int start = (pageNum - 1) * pageSize;
+        List<WorkType> workTypes = workTypeMapper.findAllByKey(keyWord);
+        int end = pageNum * pageSize > workTypes.size() ? workTypes.size() : pageNum * pageSize;
+        List<WorkType> pageWorkTypes = workTypes.subList(start, end);
+        Map<String, Object> res = new HashMap<>();
+        res.put("data", pageWorkTypes);
+        res.put("total", workTypes.size());
+        return res;
     }
 
     public Integer selectTotal() {

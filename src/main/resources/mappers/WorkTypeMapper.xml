@@ -36,4 +36,11 @@ mybatis是使用接口动态代理
         </where>
 
     </update>
+
+    <select id="findAllByKey" resultType="com.alvaria.datareuse.entity.WorkType">
+        select * from work_type
+        <if test="keyWord != null and keyWord.length() > 0">
+            where work_type_name like CONCAT('%',#{keyWord},'%')
+        </if>
+    </select>
 </mapper>
