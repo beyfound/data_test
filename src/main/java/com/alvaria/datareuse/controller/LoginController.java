@@ -23,7 +23,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseResult login(@RequestBody UserInfo userInfo) {
         UserInfo user = new UserInfo();
-        Map<String, String> tokenMap = new HashMap<>();
+        Map<String, Object> tokenMap = new HashMap<>();
         if (user != null) {
             Map<String, String> payload = new HashMap<>();
             payload.put("userId", "2");
@@ -31,6 +31,7 @@ public class LoginController {
             payload.put("role", "admin");
             String token = JwtUtil.generateToken(payload);
             tokenMap.put("token", token);
+            tokenMap.put("user", payload);
 
             return new ResponseResult(0, tokenMap, "Login successful");
         }
