@@ -31,6 +31,10 @@ public class UserService {
         return userMapper.findAll();
     }
 
+    public List<User> getAllByKey(String keyWord) {
+        return userMapper.findAllByKey(keyWord);
+    }
+
     public int saveUser(User user) {
         if (user.getId() == null) {
             return userMapper.insertUser(user);
@@ -172,12 +176,14 @@ public class UserService {
         return userMapper.findAllByRole(role);
     }
 
-    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize) {
-        pageNum = (pageNum - 1) * pageSize;
-        List<User> users = userMapper.selectPage(pageNum, pageSize);
+    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord) {
+        int start = (pageNum - 1) * pageSize;
+        List<User> users = userMapper.findAllByKey(keyWord);
+        int end = pageNum * pageSize > users.size() ? users.size() : pageNum * pageSize;
+        List<User> pageUsers = users.subList(start, end);
         Map<String, Object> res = new HashMap<>();
-        res.put("data", users);
-        res.put("total", userMapper.selectTotal());
+        res.put("data", pageUsers);
+        res.put("total", users.size());
         return res;
     }
 

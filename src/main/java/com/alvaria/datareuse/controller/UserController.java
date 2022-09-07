@@ -141,9 +141,9 @@ public class UserController {
 
     //分页查询接口
     @GetMapping("/page")
-    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam String keyword) {
 
-        return new ResponseResult(0, userService.selectPage(pageNum, pageSize), "");
+        return new ResponseResult(0, userService.selectPage(pageNum, pageSize, keyword), "");
     }
 
     @GetMapping("/status/page")

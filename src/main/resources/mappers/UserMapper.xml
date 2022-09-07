@@ -17,6 +17,13 @@ mybatis是使用接口动态代理
         select * from user where id = #{user_id}
     </select>
 
+    <select id="findAllByKey" resultType="com.alvaria.datareuse.entity.User">
+        select * from user
+        <if test="keyWord != null and keyWord.length() > 0">
+            where email like CONCAT('%',#{keyWord},'%')
+        </if>
+    </select>
+
     <select id="findAll" resultType="com.alvaria.datareuse.entity.User">
         select * from user
     </select>
@@ -150,5 +157,13 @@ mybatis是使用接口动态代理
             </foreach>
         </if>
           limit 1
+    </select>
+
+    <select id="selectPage" resultType="com.alvaria.datareuse.entity.User">
+        select * from user
+        <if test="keyWord != null and keyWord.length() > 0">
+            where email like CONCAT('%',#{keyWord},'%')
+        </if>
+        limit #{pageNum}, #{pageSize}
     </select>
 </mapper>

@@ -37,11 +37,13 @@ public interface UserMapper {
     @Select("select * from user where email = #{email}")
     User getUserByEmail(String email);
 
-    @Select("select * from user limit #{pageNum}, #{pageSize}")
-    List<User> selectPage(Integer pageNum, Integer pageSize);
+
+    List<User> selectPage(Integer pageNum, Integer pageSize, String keyWord);
 
     @Select("select count(*) from user")
     Integer selectTotal();
 
     User getOneAvailableUser(String role, String org, String team, String identity, @Param("array") String[] tags, boolean mtData, @Param("IDs") List<Integer> exclusionIDs);
+
+    List<User> findAllByKey(String keyWord);
 }
