@@ -12,4 +12,11 @@ mybatis是使用接口动态代理
             tags LIKE CONCAT('%',#{tag},'%')
         </foreach>
     </select>
+
+    <select id="findAllByKey" resultType="com.alvaria.datareuse.entity.Station">
+        select * from station
+        <if test="keyWord != null and keyWord.length() > 0">
+            where station like CONCAT('%',#{keyWord},'%')
+        </if>
+    </select>
 </mapper>

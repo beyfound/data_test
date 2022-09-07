@@ -28,4 +28,6 @@ public interface StationMapper {
 
     @Select("select * from station where idle = 0 limit #{pageNum}, #{pageSize}")
     List<Station> selectInUsePage(Integer pageNum, Integer pageSize);
+
+    List<Station> findAllByKey(String keyWord);
 }

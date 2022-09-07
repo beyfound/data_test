@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StationService {
@@ -32,8 +34,15 @@ public class StationService {
         return null;
     }
 
-    public List<Station> selectPage(Integer pageNum, Integer pageSize) {
-        return stationMapper.selectPage(pageNum, pageSize);
+    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord) {
+        int start = (pageNum - 1) * pageSize;
+        List<Station> stations = stationMapper.findAllByKey(keyWord);
+        int end = pageNum * pageSize > stations.size() ? stations.size() : pageNum * pageSize;
+        List<Station> pageStations = stations.subList(start, end);
+        Map<String, Object> res = new HashMap<>();
+        res.put("data", pageStations);
+        res.put("total", stations.size());
+        return res;
     }
 
     public Integer selectTotal() {

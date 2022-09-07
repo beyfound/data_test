@@ -28,14 +28,8 @@ public class StationController {
     private StationService stationService;
 
     @GetMapping("/page")
-    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        pageNum = (pageNum - 1) * pageSize;
-        List<Station> data = stationService.selectPage(pageNum, pageSize);
-        Integer total = stationService.selectTotal();
-        Map<String, Object> res = new HashMap<>();
-        res.put("data", data);
-        res.put("total", total);
-        return new ResponseResult(0,res,"");
+    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam(required = false) String keyWord) {
+        return new ResponseResult(0,stationService.selectPage(pageNum, pageSize, keyWord),"");
     }
 
     @GetMapping("/status/page")
