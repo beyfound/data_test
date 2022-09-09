@@ -17,6 +17,7 @@ mybatis是使用接口动态代理
         select * from station
         <if test="keyWord != null and keyWord.length() > 0">
             where station like CONCAT('%',#{keyWord},'%')
+            or org like CONCAT('%',#{keyWord},'%')
         </if>
     </select>
 </mapper>
