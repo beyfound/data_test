@@ -22,13 +22,13 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseResult login(@RequestBody UserInfo userInfo) {
-        UserInfo user = new UserInfo();
+        UserInfo user = userInfoService.findByUsernameAndPassword(userInfo.getUsername(),userInfo.getPassword());
         Map<String, Object> tokenMap = new HashMap<>();
         if (user != null) {
             Map<String, String> payload = new HashMap<>();
-            payload.put("userId", "2");
-            payload.put("username", "admin");
-            payload.put("role", "admin");
+            payload.put("userId", user.getId().toString());
+            payload.put("username", user.getUsername());
+            payload.put("role", user.getRole());
             String token = JwtUtil.generateToken(payload);
             tokenMap.put("token", token);
             tokenMap.put("user", payload);
