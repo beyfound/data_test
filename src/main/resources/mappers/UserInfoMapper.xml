@@ -5,10 +5,10 @@
 <mapper namespace="com.alvaria.datareuse.dao.UserInfoMapper">
 
     <select id="findByUsernameAndPassword" parameterType="string" resultType="com.alvaria.datareuse.entity.UserInfo">
-        select id, username from user_info where username = #{username} and password = #{password};
+        select id, username, role from user_info where username = #{username} and password = #{password};
     </select>
 
     <select id="findUserInfoById" resultType="com.alvaria.datareuse.entity.UserInfo">
-        select id, username from user_info where id = #{id};
+        select id, username, role from user_info where id = #{id};
     </select>
 </mapper>
