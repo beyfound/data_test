@@ -32,10 +32,10 @@ public class UserController {
 
     @PostMapping("upload")
     @ApiOperation(value = "import users into the database")
-    public String multipartFileTest(@RequestPart MultipartFile multipartFile) throws Exception {
+    public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile) throws Exception {
         List<User> userInfoList = uploadCSVService.getUserListFromCSV(multipartFile);
         int a = userService.insertUsers(userInfoList);
-        return "insert " + a + " records";
+        return new ResponseResult(0, "Insert " + a + " record(s) successfully", "" );
     }
 
 
@@ -68,7 +68,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseResult deleteUsers(@RequestParam(value = "ids[]") Integer[] ids) {
+    public ResponseResult deleteUsers(@RequestBody Integer[] ids) {
         int row = userService.deleteUsers(ids);
         return new ResponseResult(row > 0 ? row : -1, "", row > 0 ? "Delete successfully" : "Delete failed");
     }

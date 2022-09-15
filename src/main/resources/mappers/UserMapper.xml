@@ -40,12 +40,10 @@ mybatis是使用接口动态代理
         </foreach>
     </insert>
 
-    <insert id="insertUser" parameterType="com.alvaria.datareuse.entity.User" useGeneratedKeys = "true" keyProperty = "id">
-        INSERT into `user` (`email`, `display`, `role`,`identity`,`tags`,`password`,`c_password`,`station`,`user_name`,`first_name,`last_name`,`mgr_team_list`,
-            `team`,`DID`, `personal_type`,`name`,`t_zone`, `language`,`manager_of_team`, `telephone_number` )
+    <insert id="insertUser" useGeneratedKeys = "true" keyProperty = "id">
+        INSERT into `user` (`email`, `display`, `role`,`identity`,`tags`,`password`,`c_password`,`station`,`user_name`,`first_name`,`last_name`,`mgr_team_list`,`team`,`DID`, `personal_type`,`name`,`t_zone`, `language`,`manager_of_team`, `telephone_number` )
         values
-            (#{user.email},#{user.display},#{user.role},#{user.identity},#{user.tags},#{user.password},#{user.cPassword},#{user.station},#{user.userName},#{user.firstName},#{user.lastName}
-                           ,#{user.mgrTeamList},#{user.team},#{user.DID},#{user.personalType},#{user.name},#{user.tZone},#{user.language},#{user.managerOfTeam},#{user.telephoneNumber})
+            (#{user.email},#{user.display},#{user.role},#{user.identity},#{user.tags},#{user.password},#{user.cPassword},#{user.station},#{user.userName},#{user.firstName},#{user.lastName},#{user.mgrTeamList},#{user.team},#{user.DID},#{user.personalType},#{user.name},#{user.tZone},#{user.language},#{user.managerOfTeam},#{user.telephoneNumber})
     </insert>
 
     <update id="update" >

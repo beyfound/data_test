@@ -12,7 +12,7 @@ public interface UserMapper {
 
     int insertUsers(List<User> list);
 
-    int insertUser(@Param("user")User user);
+    int insertUser(@Param("user") User user);
 
     List<User> findAll();
 
