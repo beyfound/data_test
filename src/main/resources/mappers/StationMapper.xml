@@ -20,4 +20,36 @@ mybatis是使用接口动态代理
             or org like CONCAT('%',#{keyWord},'%')
         </if>
     </select>
+
+    <delete id="deleteStations">
+        delete from `station` where
+        <foreach collection="list" item="id" separator=" or ">
+            id = #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertStation" parameterType="com.alvaria.datareuse.entity.Station" useGeneratedKeys = "true" keyProperty = "id">
+        INSERT into `station` (`station`, `org`, `idle`)
+        values
+            (#{sta.station},#{sta.org},#{sta.idle})
+    </insert>
+
+    <update id="update" >
+        UPDATE `station`
+        <set >
+            <if test="station != null">
+                station = #{station},
+            </if>
+            <if test="org != null">
+                org = #{org},
+            </if>
+            <if test="idle != null">
+                idle = #{idle},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+
+    </update>
 </mapper>

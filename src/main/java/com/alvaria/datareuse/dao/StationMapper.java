@@ -30,4 +30,10 @@ public interface StationMapper {
     List<Station> selectInUsePage(Integer pageNum, Integer pageSize);
 
     List<Station> findAllByKey(String keyWord);
+
+    int deleteStations(@Param("list") String[] ids);
+
+    int insertStation(@Param("sta") Station station);
+
+    int update(Station station);
 }

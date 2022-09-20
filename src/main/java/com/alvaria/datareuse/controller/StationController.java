@@ -42,4 +42,17 @@ public class StationController {
         res.put("total", total);
         return new ResponseResult(0,res,"");
     }
+
+    @DeleteMapping("/delete")
+    public ResponseResult deleteStations(@RequestBody String[] ids) {
+        return new ResponseResult(0, "Delete " + stationService.deleteStations(ids) + " station(s) successfully", "");
+    }
+
+    @PostMapping("/save")
+    public ResponseResult SaveOrUpdate(@RequestBody Station station) {
+        int row = stationService.saveStation(station);
+        int code = row > 0 ? 0 : -1;
+        String message = row > 0 ? "Save successfully" : "Save failed";
+        return new ResponseResult(code, message, "");
+    }
 }

@@ -56,4 +56,17 @@ public class StationService {
     public List<Station> selectInUsePage(Integer pageNum, Integer pageSize) {
         return stationMapper.selectInUsePage(pageNum, pageSize);
     }
+
+    public int deleteStations(String[] ids) {
+        int row = stationMapper.deleteStations(ids);
+        return row;
+    }
+
+    public int saveStation(Station station) {
+        if (station.getId() == null) {
+            return stationMapper.insertStation(station);
+        } else {
+            return stationMapper.update(station);
+        }
+    }
 }
