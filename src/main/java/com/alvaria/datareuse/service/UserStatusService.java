@@ -61,12 +61,15 @@ public class UserStatusService {
         return userStatusMapper.removeStatusByUUIDList(uuids);
     }
 
-
     public List<UserStatus> selectInusePage(Integer pageNum, Integer pageSize) {
         return userStatusMapper.selectInUsePage(pageNum, pageSize);
     }
 
     public Integer selectTotal() {
         return userStatusMapper.selectTotal();
+    }
+
+    public int releaseUsersByIds(List<String> ids) {
+        return userStatusMapper.removeStatusByIds(ids);
     }
 }

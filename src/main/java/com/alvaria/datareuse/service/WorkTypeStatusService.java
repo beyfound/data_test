@@ -38,4 +38,7 @@ public class WorkTypeStatusService {
         return workTypeStatusMapper.selectTotal();
     }
 
+    public int releaseWorkTypeByIds(List<String> ids) {
+        return workTypeStatusMapper.releaseWorkTypeByIds(ids);
+    }
 }

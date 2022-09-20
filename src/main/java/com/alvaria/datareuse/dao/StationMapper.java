@@ -36,4 +36,6 @@ public interface StationMapper {
     int insertStation(@Param("sta") Station station);
 
     int update(Station station);
+
+    int releaseStaionsByIds(List<String> ids);
 }

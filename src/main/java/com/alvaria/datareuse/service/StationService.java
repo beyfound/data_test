@@ -69,4 +69,8 @@ public class StationService {
             return stationMapper.update(station);
         }
     }
+
+    public int releaseStationsByIds(List<String> ids) {
+        return stationMapper.releaseStaionsByIds(ids);
+    }
 }

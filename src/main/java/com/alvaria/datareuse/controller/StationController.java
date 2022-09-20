@@ -55,4 +55,13 @@ public class StationController {
         String message = row > 0 ? "Save successfully" : "Save failed";
         return new ResponseResult(code, message, "");
     }
+
+    @DeleteMapping("/release/ids")
+    public ResponseResult releaseUserByIds(@RequestBody List<String> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ResponseResult(-1, ids, "parameter error");
+        }
+
+        return new ResponseResult(0, "effect " + stationService.releaseStationsByIds(ids) + " rows", "Release successfully");
+    }
 }

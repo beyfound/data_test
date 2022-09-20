@@ -111,6 +111,15 @@ public class UserController {
         return new ResponseResult(0, "effect " + userStatusService.releaseUserList(uuids) + " rows", "Release successfully");
     }
 
+    @DeleteMapping("/release/ids")
+    public ResponseResult releaseUserByIds(@RequestBody List<String> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ResponseResult(-1, ids, "parameter error");
+        }
+
+        return new ResponseResult(0, "effect " + userStatusService.releaseUsersByIds(ids) + " rows", "Release successfully");
+    }
+
     @GetMapping("/{userId}/tag")
     public ResponseResult getUserTagsById(@PathVariable Integer userId) {
         return new ResponseResult(0, userTagService.getUserTagsById(userId), "");

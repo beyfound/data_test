@@ -96,4 +96,13 @@ public class WorkTypeController {
     public ResponseResult deleteWorkTypes(@RequestBody String[] ids) {
         return new ResponseResult(0, "Delete " + workTypeService.deleteWorkTypes(ids) + " worktype(s) successfully", "");
     }
+
+    @DeleteMapping("/release/ids")
+    public ResponseResult releaseWorkTypeByIds(@RequestBody List<String> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ResponseResult(-1, ids, "parameter error");
+        }
+
+        return new ResponseResult(0, "effect " + workTypeStatusService.releaseWorkTypeByIds(ids) + " rows", "Release successfully");
+    }
 }

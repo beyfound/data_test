@@ -44,4 +44,6 @@ public interface UserStatusMapper {
 
     @Select("select count(*) from user_status")
     Integer selectTotal();
+
+    int removeStatusByIds(List<String> ids);
 }

@@ -30,4 +30,5 @@ public interface WorkTypeStatusMapper {
     @Select("select count(*) from work_type_status")
     Integer selectTotal();
 
+    int releaseWorkTypeByIds(List<String> ids);
 }
