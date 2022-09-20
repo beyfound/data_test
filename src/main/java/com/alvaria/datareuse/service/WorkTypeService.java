@@ -89,4 +89,8 @@ public class WorkTypeService {
     public List<WorkType> getAll(){
         return workTypeMapper.findAll();
     }
+
+    public int deleteWorkTypes(String[] ids) {
+        return workTypeMapper.removeWorkTypeByIds(ids);
+    }
 }

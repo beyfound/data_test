@@ -45,7 +45,7 @@ public class WorkTypeController {
     }
 
     @PostMapping("/save")
-    public ResponseResult SaveOrUpdate(WorkType workType) {
+    public ResponseResult SaveOrUpdate(@RequestBody WorkType workType) {
         int row = workTypeService.saveWorkType(workType);
         int code = row > 0 ? 0 : -1;
         String message = row > 0 ? "Save successfully" : "Save failed";
@@ -86,9 +86,14 @@ public class WorkTypeController {
 
     @PostMapping("upload")
     @ApiOperation(value = "import users into the database")
-    public String multipartFileTest(@RequestPart MultipartFile multipartFile) throws Exception {
-        List<WorkType> userInfoList = uploadCSVService.getWorkTypesFromCSV(multipartFile);
-        int a = workTypeService.insertWorkTypes(userInfoList);
-        return "insert " + a + " records";
+    public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile) throws Exception {
+        List<WorkType> workTypes = uploadCSVService.getWorkTypesFromCSV(multipartFile);
+        int a = workTypeService.insertWorkTypes(workTypes);
+        return new ResponseResult(0, "Insert " + a + " record(s) successfully", "" );
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseResult deleteWorkTypes(@RequestBody String[] ids) {
+        return new ResponseResult(0, "Delete " + workTypeService.deleteWorkTypes(ids) + " worktype(s) successfully", "");
     }
 }

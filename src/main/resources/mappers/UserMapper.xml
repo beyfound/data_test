@@ -107,8 +107,9 @@ mybatis是使用接口动态代理
                 manager_of_team = #{managerOfTeam},
             </if>
             <if test="telephoneNumber != null">
-                telephone_number = #{telephoneNumber}
+                telephone_number = #{telephoneNumber},
             </if>
+            mt_data = #{mtData}
         </set>
         <where>
             id = #{id}

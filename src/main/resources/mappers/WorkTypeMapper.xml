@@ -8,10 +8,10 @@ mybatis是使用接口动态代理
 <mapper namespace="com.alvaria.datareuse.dao.WorkTypeMapper">
 
     <insert id="insertWorkTypes" >
-        INSERT into `work_type` (`work_type_name`, `type`)
+        INSERT into `work_type` (`work_type_name`, `type`, `mt_data`)
         values
         <foreach collection="list" item="wt" separator=",">
-            (#{wt.workTypeName},#{wt.type})
+            (#{wt.workTypeName},#{wt.type},#{wt.mtData})
         </foreach>
     </insert>
 
@@ -25,11 +25,12 @@ mybatis是使用接口动态代理
         UPDATE `work_type`
         <set >
             <if test="workTypeName != null">
-                work_type = #{workTypeName},
+                work_type_name = #{workTypeName},
             </if>
             <if test="type != null">
-                type = #{type}
+                type = #{type},
             </if>
+            mt_data = #{mtData}
         </set>
         <where>
             id = #{id}
@@ -43,4 +44,11 @@ mybatis是使用接口动态代理
             where work_type_name like CONCAT('%',#{keyWord},'%')
         </if>
     </select>
+
+    <delete id="removeWorkTypeByIds">
+        delete from `work_type` where
+        <foreach collection="list" item="id" separator=" or ">
+            id = #{id}
+        </foreach>
+    </delete>
 </mapper>

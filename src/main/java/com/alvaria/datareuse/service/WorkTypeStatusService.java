@@ -1,5 +1,6 @@
 package com.alvaria.datareuse.service;
 
+import com.alvaria.datareuse.dao.WorkTypeMapper;
 import com.alvaria.datareuse.dao.WorkTypeStatusMapper;
 import com.alvaria.datareuse.entity.WorkTypeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +37,5 @@ public class WorkTypeStatusService {
     public Integer selectTotal() {
         return workTypeStatusMapper.selectTotal();
     }
+
 }

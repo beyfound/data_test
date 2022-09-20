@@ -32,4 +32,6 @@ public interface WorkTypeMapper {
     List<WorkType> findAll();
 
     List<WorkType> findAllByKey(String keyWord);
+
+    int removeWorkTypeByIds(@Param("list") String[] ids);
 }
