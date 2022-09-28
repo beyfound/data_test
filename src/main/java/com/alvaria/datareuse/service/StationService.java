@@ -35,9 +35,15 @@ public class StationService {
     }
 
     public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord) {
-        int start = (pageNum - 1) * pageSize;
         List<Station> stations = stationMapper.findAllByKey(keyWord);
-        int end = pageNum * pageSize > stations.size() ? stations.size() : pageNum * pageSize;
+        int staNum = stations.size();
+        int start = (pageNum - 1) * pageSize;
+        while (start >= staNum) {
+            pageNum--;
+            start = (pageNum - 1) * pageSize;
+        }
+
+        int end = pageNum * pageSize > staNum ? staNum : pageNum * pageSize;
         List<Station> pageStations = stations.subList(start, end);
         Map<String, Object> res = new HashMap<>();
         res.put("data", pageStations);

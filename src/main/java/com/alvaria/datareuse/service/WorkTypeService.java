@@ -72,9 +72,15 @@ public class WorkTypeService {
     }
 
     public Map<String, Object> selectPage(Integer pageNum, Integer pageSize,String keyWord) {
-        int start = (pageNum - 1) * pageSize;
         List<WorkType> workTypes = workTypeMapper.findAllByKey(keyWord);
-        int end = pageNum * pageSize > workTypes.size() ? workTypes.size() : pageNum * pageSize;
+        int wtNum = workTypes.size();
+        int start = (pageNum - 1) * pageSize;
+        while (start >= wtNum) {
+            pageNum--;
+            start = (pageNum - 1) * pageSize;
+        }
+
+        int end = pageNum * pageSize > wtNum ? wtNum : pageNum * pageSize;
         List<WorkType> pageWorkTypes = workTypes.subList(start, end);
         Map<String, Object> res = new HashMap<>();
         res.put("data", pageWorkTypes);

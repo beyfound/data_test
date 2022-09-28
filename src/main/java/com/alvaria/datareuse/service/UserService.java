@@ -177,9 +177,15 @@ public class UserService {
     }
 
     public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord) {
-        int start = (pageNum - 1) * pageSize;
         List<User> users = userMapper.findAllByKey(keyWord);
-        int end = pageNum * pageSize > users.size() ? users.size() : pageNum * pageSize;
+        int userNum = users.size();
+        int start = (pageNum - 1) * pageSize;
+        while (start >= userNum) {
+            pageNum--;
+            start = (pageNum - 1) * pageSize;
+        }
+
+        int end = pageNum * pageSize > userNum ? userNum : pageNum * pageSize;
         List<User> pageUsers = users.subList(start, end);
         Map<String, Object> res = new HashMap<>();
         res.put("data", pageUsers);
