@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.sun.xml.internal.ws.api.model.wsdl.WSDLBoundOperation.ANONYMOUS.required;
+
 @RestController
 @RequestMapping("/api/work_type")
 @CrossOrigin
@@ -86,9 +88,9 @@ public class WorkTypeController {
 
     @PostMapping("upload")
     @ApiOperation(value = "import users into the database")
-    public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile) throws Exception {
+    public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile,  @RequestParam(required = false, defaultValue = "true") boolean isReuseData) throws Exception {
         List<WorkType> workTypes = uploadCSVService.getWorkTypesFromCSV(multipartFile);
-        int a = workTypeService.insertWorkTypes(workTypes);
+        int a = workTypeService.insertWorkTypes(workTypes, isReuseData);
         return new ResponseResult(0, "Insert " + a + " record(s) successfully", "" );
     }
 

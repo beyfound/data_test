@@ -8,6 +8,14 @@ mybatis是使用接口动态代理
 <mapper namespace="com.alvaria.datareuse.dao.WorkTypeMapper">
 
     <insert id="insertWorkTypes" >
+        INSERT into `work_type_not_reuse` (`work_type_name`, `type`)
+        values
+        <foreach collection="list" item="wt" separator=",">
+            (#{wt.workTypeName},#{wt.type})
+        </foreach>
+    </insert>
+
+    <insert id="insertReuseWorkTypes" >
         INSERT into `work_type` (`work_type_name`, `type`, `mt_data`)
         values
         <foreach collection="list" item="wt" separator=",">

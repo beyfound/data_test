@@ -27,8 +27,12 @@ public class WorkTypeService {
         }
     }
 
-    public int insertWorkTypes(List<WorkType> list) {
-        return workTypeMapper.insertWorkTypes(list);
+    public int insertWorkTypes(List<WorkType> list, boolean isReuseData) {
+        if (isReuseData) {
+            return workTypeMapper.insertReuseWorkTypes(list);
+        } else {
+            return workTypeMapper.insertWorkTypes(list);
+        }
     }
 
     @Transactional
@@ -71,7 +75,7 @@ public class WorkTypeService {
         return new ResponseResult(-1, "", "Apply work type failed.");
     }
 
-    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize,String keyWord) {
+    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord) {
         List<WorkType> workTypes = workTypeMapper.findAllByKey(keyWord);
         int wtNum = workTypes.size();
         int start = (pageNum - 1) * pageSize;
@@ -92,7 +96,7 @@ public class WorkTypeService {
         return workTypeMapper.selectTotal();
     }
 
-    public List<WorkType> getAll(){
+    public List<WorkType> getAll() {
         return workTypeMapper.findAll();
     }
 

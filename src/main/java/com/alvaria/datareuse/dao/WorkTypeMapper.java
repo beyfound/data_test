@@ -14,6 +14,8 @@ public interface WorkTypeMapper {
 
     int insertWorkTypes(List<WorkType> list);
 
+    int insertReuseWorkTypes(List<WorkType> list);
+
     int insertWorkType(@Param("wt") WorkType workType);
 
     int update(WorkType workType);

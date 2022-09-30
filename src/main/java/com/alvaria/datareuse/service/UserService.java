@@ -168,8 +168,12 @@ public class UserService {
     }
 
     @Transactional
-    public int insertUsers(List<User> list) {
-        return userMapper.insertUsers(list);
+    public int insertUsers(List<User> list, boolean isReuseData) {
+        if (isReuseData) {
+            return userMapper.insertReuseUsers(list);
+        } else {
+            return userMapper.insertUsers(list);
+        }
     }
 
     public List<User> findUserIdsByRole(String role) {

@@ -32,9 +32,9 @@ public class UserController {
 
     @PostMapping("upload")
     @ApiOperation(value = "import users into the database")
-    public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile) throws Exception {
+    public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile, @RequestParam(required = false, defaultValue = "true") boolean isReuseData) throws Exception {
         List<User> userInfoList = uploadCSVService.getUserListFromCSV(multipartFile);
-        int a = userService.insertUsers(userInfoList);
+        int a = userService.insertUsers(userInfoList, isReuseData);
         return new ResponseResult(0, "Insert " + a + " record(s) successfully", "" );
     }
 

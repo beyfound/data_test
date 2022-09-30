@@ -10,6 +10,8 @@ public interface UserMapper {
 
     User getUserById(@Param("user_id") Integer id);
 
+    int insertReuseUsers(List<User> list);
+
     int insertUsers(List<User> list);
 
     int insertUser(@Param("user") User user);
