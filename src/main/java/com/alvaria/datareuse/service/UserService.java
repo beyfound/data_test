@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-
     @Autowired
     private UserMapper userMapper;
 
@@ -205,4 +204,5 @@ public class UserService {
     public int insertUser(User user) {
         return userMapper.insertUser(user);
     }
+
 }

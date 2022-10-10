@@ -1,6 +1,7 @@
 package com.alvaria.datareuse.controller;
 
 import com.alvaria.datareuse.entity.*;
+import com.alvaria.datareuse.service.TestBedDataService;
 import com.alvaria.datareuse.service.UploadCSVService;
 import com.alvaria.datareuse.service.WorkTypeService;
 import com.alvaria.datareuse.service.WorkTypeStatusService;
@@ -29,6 +30,9 @@ public class WorkTypeController {
 
     @Autowired
     private UploadCSVService uploadCSVService;
+
+    @Autowired
+    private TestBedDataService testBedDataService;
 
     @GetMapping("/page")
     public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam(required = false) String keyWord) {
@@ -106,5 +110,10 @@ public class WorkTypeController {
         }
 
         return new ResponseResult(0, "effect " + workTypeStatusService.releaseWorkTypeByIds(ids) + " rows", "Release successfully");
+    }
+
+    @GetMapping("/organizations/{org}/workTypes")
+    public ResponseResult getOrganizationUsers(@PathVariable String org, @RequestParam String keyWord){
+        return new ResponseResult(0, testBedDataService.getOrganizationWorkTypes(org, keyWord), "");
     }
 }

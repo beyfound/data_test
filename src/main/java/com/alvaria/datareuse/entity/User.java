@@ -61,4 +61,29 @@ public class User {
     private String managerOfTeam;
     private String telephoneNumber;
     private boolean mtData;
+
+    @JsonProperty("sn")
+    public void setSn(String sn){
+        this.lastName = sn;
+    }
+
+    @JsonProperty("givenName")
+    public void setGivenName(String givenName){
+        this.firstName = givenName;
+    }
+
+    @JsonProperty("displayName")
+    public void setDisplayName(String givenName){
+        this.firstName = givenName;
+    }
+
+    @JsonProperty("managerOf")
+    public void setManagerOf(String managerOf){
+        this.managerOfTeam = managerOf;
+    }
+
+    @JsonProperty("username")
+    public void setUsername(String username){
+        this.userName = username;
+    }
 }

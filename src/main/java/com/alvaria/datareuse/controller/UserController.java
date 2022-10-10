@@ -30,6 +30,9 @@ public class UserController {
     @Autowired
     private StationService stationService;
 
+    @Autowired
+    private TestBedDataService testBedDataService;
+
     @PostMapping("upload")
     @ApiOperation(value = "import users into the database")
     public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile, @RequestParam(required = false, defaultValue = "true") boolean isReuseData) throws Exception {
@@ -166,10 +169,8 @@ public class UserController {
         return new ResponseResult(0, res, "");
     }
 
-//    @PostMapping("/login")
-//    public boolean login(@RequestBody Login login) {
-//        JSONObject json = new JSONObject();
-//        return true;
-//    }
-
+    @GetMapping("/organizations/{org}/users")
+    public ResponseResult getOrganizationUsers(@PathVariable String org, @RequestParam String keyWord){
+        return new ResponseResult(0, testBedDataService.getOrganizationUsers(org, keyWord), "");
+    }
 }
