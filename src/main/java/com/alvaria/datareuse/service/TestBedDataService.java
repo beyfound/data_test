@@ -25,7 +25,12 @@ public class TestBedDataService {
     private static Map<String, OrgInfo> Test_Environment = new HashMap<String, OrgInfo>();
 
     static {
-        Test_Environment.put("pens", new OrgInfo("pens", "Basic UFJPVklTSU9OSU5HX0FVVE9NQVRJT05fU0VSVklDRTprMjhhWnJXWjFfODBxSDFzWWlsbE82aG84c3ErR1NjM2p3ZlFkRjJ3VFhrPQ==", "https://auth.test.id.aspect-cloud.net"));
+        OrgInfo pens = new OrgInfo();
+        pens.setApiKey("023101B696FF3C7DD1A35A9CB5FCEA015054550B7FDEC2D05E669D2BB9D91C8F");
+        pens.setAuthorization("Basic UFJPVklTSU9OSU5HX0FVVE9NQVRJT05fU0VSVklDRTprMjhhWnJXWjFfODBxSDFzWWlsbE82aG84c3ErR1NjM2p3ZlFkRjJ3VFhrPQ==");
+        pens.setMyAspectBaseUrl("https://auth.test.id.aspect-cloud.net");
+
+        Test_Environment.put("pens", pens);
     }
 
     public List<User> getOrganizationUsers(String org, String keyWord) {
@@ -74,7 +79,7 @@ public class TestBedDataService {
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
-        headers.put("x-api-key", "023101B696FF3C7DD1A35A9CB5FCEA015054550B7FDEC2D05E669D2BB9D91C8F");
+        headers.put("x-api-key", Test_Environment.get(org).getApiKey());
         Map<String, String> inboundTypeFilter = new HashMap<>();
         inboundTypeFilter.put("voice", "InboundVoiceWTs");
         inboundTypeFilter.put("sms", "InboundSMSWTs");
