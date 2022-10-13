@@ -29,7 +29,7 @@ public class TestBedDataService {
         pens.setApiKey("023101B696FF3C7DD1A35A9CB5FCEA015054550B7FDEC2D05E669D2BB9D91C8F");
         pens.setAuthorization("Basic UFJPVklTSU9OSU5HX0FVVE9NQVRJT05fU0VSVklDRTprMjhhWnJXWjFfODBxSDFzWWlsbE82aG84c3ErR1NjM2p3ZlFkRjJ3VFhrPQ==");
         pens.setMyAspectBaseUrl("https://auth.test.id.aspect-cloud.net");
-
+        pens.setFullName("pens");
         Test_Environment.put("pens", pens);
     }
 
