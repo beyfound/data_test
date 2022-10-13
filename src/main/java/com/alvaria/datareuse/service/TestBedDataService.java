@@ -144,9 +144,4 @@ public class TestBedDataService {
         }
         return token;
     }
-
-    public static void main(String[] args) {
-        TestBedDataService service = new TestBedDataService();
-        Object token = service.getOrganizationWorkTypes("pens", "Autocomm");
-    }
 }
