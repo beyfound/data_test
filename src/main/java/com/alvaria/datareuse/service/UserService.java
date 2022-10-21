@@ -167,10 +167,16 @@ public class UserService {
     }
 
     @Transactional
-    public int insertUsers(List<User> list, boolean isReuseData) {
+    public int insertUsers(List<User> list, boolean isReuseData, boolean isMTData) {
         if (isReuseData) {
             for (User user : list) {
                 user.setReuseData(true);
+            }
+        }
+
+        if (isMTData) {
+            for (User user : list) {
+                user.setMtData(true);
             }
         }
 
@@ -204,12 +210,13 @@ public class UserService {
 
 
     public int saveUsers(List<User> users) {
-        int count = 0;
         for (User user: users) {
-            count += saveUser(user);
+            String email = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+            user.setEmail(email);
+            user.setUserName(null);
         }
 
-        return count;
+        return userMapper.insertUsers(users);
     }
 
 }

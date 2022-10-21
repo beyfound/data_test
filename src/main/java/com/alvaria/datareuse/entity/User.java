@@ -83,8 +83,8 @@ public class User {
         this.managerOfTeam = managerOf;
     }
 
-    @JsonProperty("username")
-    public void setUsername(String username){
-        this.userName = username;
-    }
+//    @JsonProperty("username")
+//    public void setUsername(String username){
+//        this.userName = username;
+//    }
 }

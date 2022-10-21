@@ -33,17 +33,17 @@ mybatis是使用接口动态代理
     </select>
 
     <insert id="insertUsers" >
-        INSERT into `user` (`email`, `display`, `role`,`identity`,`tags`,`password`,`c_password`,`station`,`user_name`,`first_name`,`last_name`,`mgr_team_list`,`team`,`DID`, `personal_type`,`name`,`t_zone`, `language`,`manager_of_team`, `telephone_number` )
+        INSERT into `user` (`email`, `display`, `role`,`identity`,`tags`,`password`,`c_password`,`station`,`user_name`,`first_name`,`last_name`,`mgr_team_list`,`team`,`DID`, `personal_type`,`name`,`t_zone`, `language`,`manager_of_team`, `telephone_number`,`mt_data`, `reuse_data` )
         values
         <foreach collection="list" item="user" separator=",">
-            (#{user.email},#{user.display},#{user.role},#{user.identity},#{user.tags},#{user.password},#{user.cPassword},#{user.station},#{user.userName},#{user.firstName},#{user.lastName},#{user.mgrTeamList},#{user.team},#{user.DID},#{user.personalType},#{user.name},#{user.tZone},#{user.language},#{user.managerOfTeam},#{user.telephoneNumber})
+            (#{user.email},#{user.display},#{user.role},#{user.identity},#{user.tags},#{user.password},#{user.cPassword},#{user.station},#{user.userName},#{user.firstName},#{user.lastName},#{user.mgrTeamList},#{user.team},#{user.DID},#{user.personalType},#{user.name},#{user.tZone},#{user.language},#{user.managerOfTeam},#{user.telephoneNumber},#{user.mtData},#{user.reuseData})
         </foreach>
     </insert>
 
     <insert id="insertUser" useGeneratedKeys = "true" keyProperty = "id">
-        INSERT into `user` (`email`, `display`, `role`,`identity`,`tags`,`password`,`c_password`,`station`,`user_name`,`first_name`,`last_name`,`mgr_team_list`,`team`,`DID`, `personal_type`,`name`,`t_zone`, `language`,`manager_of_team`, `telephone_number` )
+        INSERT into `user` (`email`, `display`, `role`,`identity`,`tags`,`password`,`c_password`,`station`,`user_name`,`first_name`,`last_name`,`mgr_team_list`,`team`,`DID`, `personal_type`,`name`,`t_zone`, `language`,`manager_of_team`, `telephone_number`, `mt_data`, `reuse_data` )
         values
-            (#{user.email},#{user.display},#{user.role},#{user.identity},#{user.tags},#{user.password},#{user.cPassword},#{user.station},#{user.userName},#{user.firstName},#{user.lastName},#{user.mgrTeamList},#{user.team},#{user.DID},#{user.personalType},#{user.name},#{user.tZone},#{user.language},#{user.managerOfTeam},#{user.telephoneNumber})
+            (#{user.email},#{user.display},#{user.role},#{user.identity},#{user.tags},#{user.password},#{user.cPassword},#{user.station},#{user.userName},#{user.firstName},#{user.lastName},#{user.mgrTeamList},#{user.team},#{user.DID},#{user.personalType},#{user.name},#{user.tZone},#{user.language},#{user.managerOfTeam},#{user.telephoneNumber},#{user.mtData},#{user.reuseData})
     </insert>
 
     <update id="update" >
@@ -109,7 +109,8 @@ mybatis是使用接口动态代理
             <if test="telephoneNumber != null">
                 telephone_number = #{telephoneNumber},
             </if>
-            mt_data = #{mtData}
+            mt_data = #{mtData},
+            reuse_data =#{reuseData}
         </set>
         <where>
             id = #{id}
