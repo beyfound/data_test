@@ -70,6 +70,12 @@ public class UserController {
         return new ResponseResult(code, user, code > 0 ? "Save successfully" : "Save failed");
     }
 
+    @PostMapping("/saveUsers")
+    public ResponseResult saveUsers(@RequestBody List<User> users) {
+        int code = userService.saveUsers(users);
+        return new ResponseResult(code, users, code > 0 ? "Save successfully" : "Save failed");
+    }
+
     @DeleteMapping("/delete")
     public ResponseResult deleteUsers(@RequestBody Integer[] ids) {
         int row = userService.deleteUsers(ids);

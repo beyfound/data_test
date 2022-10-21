@@ -33,14 +33,6 @@ mybatis是使用接口动态代理
     </select>
 
     <insert id="insertUsers" >
-        INSERT into `user_not_reuse` (`email`, `display`, `role`, `password`,`user_name`,`first_name`,`last_name`,`team`,`name`,`t_zone`, `language`,`manager_of_team`, `telephone_number` )
-        values
-        <foreach collection="list" item="user" separator=",">
-            (#{user.email},#{user.display},#{user.role},#{user.password},#{user.userName},#{user.firstName},#{user.lastName},#{user.team},#{user.name},#{user.tZone},#{user.language},#{user.managerOfTeam},#{user.telephoneNumber})
-        </foreach>
-    </insert>
-
-    <insert id="insertReuseUsers" >
         INSERT into `user` (`email`, `display`, `role`,`identity`,`tags`,`password`,`c_password`,`station`,`user_name`,`first_name`,`last_name`,`mgr_team_list`,`team`,`DID`, `personal_type`,`name`,`t_zone`, `language`,`manager_of_team`, `telephone_number` )
         values
         <foreach collection="list" item="user" separator=",">

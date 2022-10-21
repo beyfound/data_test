@@ -61,6 +61,7 @@ public class User {
     private String managerOfTeam;
     private String telephoneNumber;
     private boolean mtData;
+    private boolean reuseData;
 
     @JsonProperty("sn")
     public void setSn(String sn){
