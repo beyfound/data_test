@@ -12,4 +12,5 @@ public class WorkType {
     private String workTypeName;
     private String type;
     private boolean mtData;
+    private boolean reuseData;
 }

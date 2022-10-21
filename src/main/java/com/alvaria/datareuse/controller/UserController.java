@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -35,7 +36,7 @@ public class UserController {
 
     @PostMapping("upload")
     @ApiOperation(value = "import users into the database")
-    public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile, @RequestParam(required = false, defaultValue = "true") boolean isReuseData, @RequestParam(required = false, defaultValue = "true") boolean isMTData) throws Exception {
+    public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile, @RequestParam(required = false, defaultValue = "true") boolean isReuseData, @RequestParam(required = false, defaultValue = "false") boolean isMTData) throws Exception {
         List<User> userInfoList = uploadCSVService.getUserListFromCSV(multipartFile);
         int a = userService.insertUsers(userInfoList, isReuseData, isMTData);
         return new ResponseResult(0, "Insert " + a + " record(s) successfully", "" );
@@ -177,6 +178,9 @@ public class UserController {
 
     @GetMapping("/organizations/{org}/users")
     public ResponseResult getOrganizationUsers(@PathVariable String org, @RequestParam String keyWord){
-        return new ResponseResult(0, testBedDataService.getOrganizationUsers(org, keyWord), "");
+        List<User> testBedUsers = testBedDataService.getOrganizationUsers(org, keyWord);
+        List<User> usersInDB  = userService.getAll();
+        List<User> userNotInDB = testBedUsers.stream().parallel().filter(a -> usersInDB.stream().noneMatch(b -> a.getEmail().equals(b.getEmail()))).collect(Collectors.toList());
+        return new ResponseResult(0, userNotInDB, "");
     }
 }

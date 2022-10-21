@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/work_type")
@@ -56,6 +57,14 @@ public class WorkTypeController {
         return new ResponseResult(code, workType, message);
     }
 
+    @PostMapping("/saveWts")
+    public ResponseResult SaveWTs(@RequestBody List<WorkType> workTypes) {
+        int row = workTypeService.saveWorkTypes(workTypes);
+        int code = row > 0 ? 0 : -1;
+        String message = row > 0 ? "Save successfully" : "Save failed";
+        return new ResponseResult(code, workTypes, message);
+    }
+
 //    @PostMapping("/save")
 //    public ResponseResult SaveList(List<WorkType> workTypeList) {
 //        int row = workTypeService.insertWorkTypes(workTypeList);
@@ -90,9 +99,9 @@ public class WorkTypeController {
 
     @PostMapping("upload")
     @ApiOperation(value = "import users into the database")
-    public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile,  @RequestParam(required = false, defaultValue = "true") boolean isReuseData) throws Exception {
+    public ResponseResult multipartFileTest(@RequestPart MultipartFile multipartFile,  @RequestParam(required = false, defaultValue = "true") boolean isReuseData, @RequestParam(required = false, defaultValue = "false") boolean isMTData) throws Exception {
         List<WorkType> workTypes = uploadCSVService.getWorkTypesFromCSV(multipartFile);
-        int a = workTypeService.insertWorkTypes(workTypes, isReuseData);
+        int a = workTypeService.insertWorkTypes(workTypes, isReuseData, isMTData);
         return new ResponseResult(0, "Insert " + a + " record(s) successfully", "" );
     }
 
@@ -112,6 +121,9 @@ public class WorkTypeController {
 
     @GetMapping("/organizations/{org}/workTypes")
     public ResponseResult getOrganizationUsers(@PathVariable String org, @RequestParam String keyWord){
-        return new ResponseResult(0, testBedDataService.getOrganizationWorkTypes(org, keyWord), "");
+        List<WorkType> testBedWTs = testBedDataService.getOrganizationWorkTypes(org, keyWord);
+        List<WorkType> wtsInDB  = workTypeService.getAll();
+        List<WorkType> wtsNotInDB = testBedWTs.stream().parallel().filter(a -> wtsInDB.stream().noneMatch(b -> a.getWorkTypeName().equals(b.getWorkTypeName()))).collect(Collectors.toList());
+        return new ResponseResult(0, wtsNotInDB, "");
     }
 }

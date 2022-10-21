@@ -8,25 +8,17 @@ mybatis是使用接口动态代理
 <mapper namespace="com.alvaria.datareuse.dao.WorkTypeMapper">
 
     <insert id="insertWorkTypes" >
-        INSERT into `work_type_not_reuse` (`work_type_name`, `type`)
+        INSERT into `work_type` (`work_type_name`, `type`, `mt_data`,`reuse_data`)
         values
         <foreach collection="list" item="wt" separator=",">
-            (#{wt.workTypeName},#{wt.type})
-        </foreach>
-    </insert>
-
-    <insert id="insertReuseWorkTypes" >
-        INSERT into `work_type` (`work_type_name`, `type`, `mt_data`)
-        values
-        <foreach collection="list" item="wt" separator=",">
-            (#{wt.workTypeName},#{wt.type},#{wt.mtData})
+            (#{wt.workTypeName},#{wt.type},#{wt.mtData},#{wt.reuseData})
         </foreach>
     </insert>
 
     <insert id="insertWorkType" parameterType="com.alvaria.datareuse.entity.WorkType" useGeneratedKeys = "true" keyProperty = "id">
-        INSERT into `work_type` (`work_type_name`, `type`)
+        INSERT into `work_type` (`work_type_name`, `type`, `mt_data`,`reuse_data`)
         values
-            (#{wt.workTypeName},#{wt.type})
+            (#{wt.workTypeName},#{wt.type},#{wt.mtData},#{wt.reuseData})
     </insert>
 
     <update id="update" >
@@ -38,7 +30,8 @@ mybatis是使用接口动态代理
             <if test="type != null">
                 type = #{type},
             </if>
-            mt_data = #{mtData}
+            mt_data = #{mtData},
+            reuse_data = #{reuseData}
         </set>
         <where>
             id = #{id}

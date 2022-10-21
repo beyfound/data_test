@@ -208,14 +208,7 @@ public class UserService {
         return userMapper.selectTotal();
     }
 
-
     public int saveUsers(List<User> users) {
-        for (User user: users) {
-            String email = user.getEmail().substring(0, user.getEmail().indexOf('@'));
-            user.setEmail(email);
-            user.setUserName(null);
-        }
-
         return userMapper.insertUsers(users);
     }
 

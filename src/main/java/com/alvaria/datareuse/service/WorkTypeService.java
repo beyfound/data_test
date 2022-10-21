@@ -27,12 +27,20 @@ public class WorkTypeService {
         }
     }
 
-    public int insertWorkTypes(List<WorkType> list, boolean isReuseData) {
+    public int insertWorkTypes(List<WorkType> list, boolean isReuseData, boolean isMTData) {
         if (isReuseData) {
-            return workTypeMapper.insertReuseWorkTypes(list);
-        } else {
-            return workTypeMapper.insertWorkTypes(list);
+            for (WorkType wt : list) {
+                wt.setReuseData(true);
+            }
         }
+
+        if (isMTData) {
+            for (WorkType wt : list) {
+                wt.setMtData(true);
+            }
+        }
+
+        return workTypeMapper.insertWorkTypes(list);
     }
 
     @Transactional
@@ -102,5 +110,9 @@ public class WorkTypeService {
 
     public int deleteWorkTypes(String[] ids) {
         return workTypeMapper.removeWorkTypeByIds(ids);
+    }
+
+    public int saveWorkTypes(List<WorkType> workTypes) {
+        return workTypeMapper.insertWorkTypes(workTypes);
     }
 }

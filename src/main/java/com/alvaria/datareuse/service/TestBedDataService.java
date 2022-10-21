@@ -66,6 +66,13 @@ public class TestBedDataService {
             }
         }
 
+        for (User user : totalUsers) {
+            user.setEmail(user.getEmail().substring(0, user.getEmail().indexOf('@')));
+            user.setPassword("Forgerock1");
+            user.setUserName(null);
+            user.setManagerOfTeam(user.getManagerOfTeam().replace('[',' ').replace(']',' ').trim());
+        }
+
         return totalUsers;
     }
 
