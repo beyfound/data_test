@@ -128,7 +128,7 @@ mybatis是使用接口动态代理
     </select>
 
     <select id="getOneAvailableUser" resultType="com.alvaria.datareuse.entity.User">
-        select * from user where role = #{role} and mt_data = #{mtData}
+        select * from user where role = #{role} and mt_data = #{mtData} and reuse_data = true
         <if test="team!=null">
             and team = #{team}
         </if>
