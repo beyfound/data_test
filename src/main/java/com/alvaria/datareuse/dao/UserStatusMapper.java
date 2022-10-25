@@ -2,6 +2,7 @@ package com.alvaria.datareuse.dao;
 
 import com.alvaria.datareuse.entity.Station;
 import com.alvaria.datareuse.entity.UserStatus;
+import com.mysql.cj.jdbc.exceptions.MySQLTransactionRollbackException;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface UserStatusMapper {
             "SELECT #{org}, #{userId},#{email}, #{testCase}, #{uuid}, #{station} FROM DUAL \n" +
             "WHERE NOT EXISTS (SELECT * FROM user_status WHERE user_id=#{userId} AND org=#{org});")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    int applyUserIfNotExist(UserStatus userStatus);
+    int applyUserIfNotExist(UserStatus userStatus) throws MySQLTransactionRollbackException;
 
     UserStatus findStatusByUserIdAndOrg(Integer userId, String org);
 

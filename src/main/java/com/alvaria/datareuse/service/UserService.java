@@ -135,18 +135,18 @@ public class UserService {
 //            availableUsers = userMapper.filterAvailableUser(role, org, mtData, null);
 //        }
 
-
-        boolean applySuccess = false;
         String stationId = null;
         List<Integer> exclusionIds = new ArrayList<>();
-        while (!applySuccess) {
+        int retryTime = 0;
+        while (retryTime < 5) {
             User userApplyTo = userMapper.getOneAvailableUser(role, org, team, identity, tags, mtData, exclusionIds);
             if (userApplyTo == null) {
                 return new ResponseResult(-1, conditionModel, "Didn't find available users, please adjust search condition");
             }
 
             UserStatus userStatus = new UserStatus(org, userApplyTo.getId(), userApplyTo.getEmail(), null, uuid, testCase);
-            if (userStatusService.applyUserIfNotExist(userStatus) == 1) {
+            int statusCode = userStatusService.applyUserIfNotExist(userStatus);
+            if (statusCode == 1) {
                 if (needStation) {
                     stationId = stationService.getIdleStationIdByOrg(org);
                     if (stationId == null)
@@ -158,6 +158,10 @@ public class UserService {
 
                 userStatus.setUser(userApplyTo);
                 return new ResponseResult(0, userStatus, "Apply user successfully.");
+            } else if (statusCode == -1) {
+                retryTime += 1;
+                Thread.sleep(3000);
+                continue;
             }
 
             exclusionIds.add(userApplyTo.getId());

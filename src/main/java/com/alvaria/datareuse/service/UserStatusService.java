@@ -3,6 +3,7 @@ package com.alvaria.datareuse.service;
 import com.alvaria.datareuse.dao.UserStatusMapper;
 import com.alvaria.datareuse.entity.User;
 import com.alvaria.datareuse.entity.UserStatus;
+import com.mysql.cj.jdbc.exceptions.MySQLTransactionRollbackException;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,13 @@ public class UserStatusService {
     }
 
     public int applyUserIfNotExist(UserStatus userStatus) {
-        return userStatusMapper.applyUserIfNotExist(userStatus);
+        int status = 0;
+        try {
+            status = userStatusMapper.applyUserIfNotExist(userStatus);
+        }catch (MySQLTransactionRollbackException e){
+            status = -1;
+        }
+        return status;
     }
 
     public UserStatus getStatusByUserIdAndOrg(Integer userId, String org) {
