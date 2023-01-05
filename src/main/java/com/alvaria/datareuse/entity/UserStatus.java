@@ -23,12 +23,13 @@ public class UserStatus {
     private User user;
     private String station;
 
-    public UserStatus(String org, int userId, String email, Date startTime, String uuid, String testCase) {
+    public UserStatus(String org, int userId, String email, Date startTime, String uuid, String testCase, String station) {
         this.org = org;
         this.userId = userId;
         this.email = email;
         this.startTime = startTime;
         this.uuid = uuid;
         this.testCase = testCase;
+        this.station = station;
     }
 }
