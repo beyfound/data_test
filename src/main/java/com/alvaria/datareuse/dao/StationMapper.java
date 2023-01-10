@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface StationMapper {
-    @Select("select * from station where idle = 1 and org=#{org} limit 1")
+    @Select("select * from station where idle = 1 and org=#{org} ORDER BY RAND() limit 1")
     Station getIdleStationIdByOrg(String org);
 
     @Update ("Update station set idle = 0 where id=#{st.id} and #{st.idle}  !=0 ")

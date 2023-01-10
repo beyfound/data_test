@@ -47,4 +47,9 @@ public class LoginController {
         userInfo.put("role", map.get("role").asString());
         return new ResponseResult(0, userInfo, "Login successful");
     }
+
+    @GetMapping("/version")
+    public ResponseResult getVersionInfo() {
+        return new ResponseResult(0, "", "current version 20230110");
+    }
 }

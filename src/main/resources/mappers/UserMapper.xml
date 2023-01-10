@@ -156,7 +156,7 @@ mybatis是使用接口动态代理
                 #{itemList}
             </foreach>
         </if>
-          limit 1
+        ORDER BY RAND() limit 1
     </select>
 
     <select id="selectPage" resultType="com.alvaria.datareuse.entity.User">
