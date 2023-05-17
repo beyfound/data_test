@@ -11,5 +11,6 @@ public class OrgInfo {
     public String fullName;
     public String authorization;
     public String myAspectBaseUrl;
+    public String apiUrl;
     public String apiKey;
 }
