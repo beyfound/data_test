@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +27,8 @@ public class UserService {
 
     @Autowired
     private StationService stationService;
+
+    private final Lock lock = new ReentrantLock();
 
     public List<User> getAll() {
         return userMapper.findAll();

@@ -44,7 +44,7 @@ public class WorkTypeService {
     }
 
     @Transactional
-    public ResponseResult applyOneWorkType(ConditionModel conditionModel) {
+    public synchronized ResponseResult applyOneWorkType(ConditionModel conditionModel) {
         String type = conditionModel.getType();
         String org = conditionModel.getOrg();
         String testCase = conditionModel.getTestCase();

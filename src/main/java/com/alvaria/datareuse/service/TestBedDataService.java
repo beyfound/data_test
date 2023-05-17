@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class TestBedDataService {
-    private static String User_BASE_URL = "https://myaspect.test.id.aspect-cloud.net/janus_api/v2/organizations/";
     private static String Username = "sysowner@%s.com";
     private static String Password = "Forgerock1";
     private static String Scope = "provisioningapi telephoneNumber mail cmAccess MessageDistributor customerexperienceapi myaspect.users acl reportingapi myaspect.teams uid outreachapi ReportingQuery ConfigurationService sn email myaspect.users.write provisioner openid givenName cn engagementcenterapi messagingapi myaspect.teams.write postalAddress preferredlanguage status";
@@ -30,11 +29,36 @@ public class TestBedDataService {
         pens.setAuthorization("Basic UFJPVklTSU9OSU5HX0FVVE9NQVRJT05fU0VSVklDRTprMjhhWnJXWjFfODBxSDFzWWlsbE82aG84c3ErR1NjM2p3ZlFkRjJ3VFhrPQ==");
         pens.setMyAspectBaseUrl("https://auth.test.id.aspect-cloud.net");
         pens.setFullName("pens");
+        pens.setApiUrl("https://myaspect.test.id.aspect-cloud.net/janus_api/v2/organizations/");
         Test_Environment.put("pens", pens);
+
+        OrgInfo glacier = new OrgInfo();
+        glacier.setApiKey("023101B696FF3C7DD1A35A9CB5FCEA015054550B7FDEC2D05E669D2BB9D91C8F");
+        glacier.setAuthorization("Basic UFJPVklTSU9OSU5HX0FVVE9NQVRJT05fU0VSVklDRTprMjhhWnJXWjFfODBxSDFzWWlsbE82aG84c3ErR1NjM2p3ZlFkRjJ3VFhrPQ==");
+        glacier.setMyAspectBaseUrl("https://auth.test.id.aspect-cloud.net");
+        glacier.setApiUrl("https://myaspect.test.id.aspect-cloud.net/janus_api/v2/organizations/");
+        glacier.setFullName("glacier");
+        Test_Environment.put("glacier", glacier);
+
+        OrgInfo pats = new OrgInfo();
+        pats.setApiKey("FE015967B89FF564A01F315CC9E8E49DCE9DA0D7DC0FA5F8FDB8A00C4FE32F69");
+        pats.setAuthorization("Basic UFJPVklTSU9OSU5HX0FVVE9NQVRJT05fU0VSVklDRTowMWFXazFjUm1lRThacHZYdkdaN3FfZEJSR0JiWDV3R25QVVlSc1dtMGdRPQ==");
+        pats.setMyAspectBaseUrl("https://auth.auto.id.aspect-cloud.net");
+        pats.setApiUrl("https://myaspect.auto.id.aspect-cloud.net/janus_api/v2/organizations/");
+        pats.setFullName("pats");
+        Test_Environment.put("pats", pats);
+
+        OrgInfo eagles = new OrgInfo();
+        eagles.setApiKey("FE015967B89FF564A01F315CC9E8E49DCE9DA0D7DC0FA5F8FDB8A00C4FE32F69");
+        eagles.setAuthorization("Basic UFJPVklTSU9OSU5HX0FVVE9NQVRJT05fU0VSVklDRTowMWFXazFjUm1lRThacHZYdkdaN3FfZEJSR0JiWDV3R25QVVlSc1dtMGdRPQ==");
+        eagles.setMyAspectBaseUrl("https://auth.auto.id.aspect-cloud.net");
+        eagles.setApiUrl("https://myaspect.auto.id.aspect-cloud.net/janus_api/v2/organizations/");
+        eagles.setFullName("eagleswonthesuperbowl52");
+        Test_Environment.put("eagles", eagles);
     }
 
     public List<User> getOrganizationUsers(String org, String keyWord) {
-        String url = User_BASE_URL + org + "/users";
+        String url = Test_Environment.get(org).apiUrl + Test_Environment.get(org).fullName + "/users";
         Map<String, String> params = new HashMap<>();
         params.put("sort", "email");
         params.put("size", "500");
