@@ -72,7 +72,7 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseResult applyOneUser(ConditionModel conditionModel) throws Exception {
+    public synchronized ResponseResult applyOneUser(ConditionModel conditionModel) throws Exception {
         String role = conditionModel.getRole();
         String org = conditionModel.getOrg();
         String[] tags = conditionModel.getTags();
