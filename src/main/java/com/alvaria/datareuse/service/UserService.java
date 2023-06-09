@@ -103,7 +103,7 @@ public class UserService {
         while (retryTime < 5) {
             User userApplyTo = userMapper.getOneAvailableUser(role, org, team, identity, tags, mtData, exclusionIds);
             if (userApplyTo == null) {
-                stationService.releaseStation(stationId);
+                stationService.releaseStation(stationId, org);
                 return new ResponseResult(-1, conditionModel, "Didn't find available users, please adjust search condition");
             }
 
@@ -122,7 +122,7 @@ public class UserService {
             exclusionIds.add(userApplyTo.getId());
         }
 
-        stationService.releaseStation(stationId);
+        stationService.releaseStation(stationId, org);
         return new ResponseResult(-1, "", "Didn't find available users, please adjust search condition");
     }
 

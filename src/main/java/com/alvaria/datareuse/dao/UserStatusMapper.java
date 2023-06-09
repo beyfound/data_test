@@ -18,6 +18,9 @@ public interface UserStatusMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int applyUserIfNotExist(UserStatus userStatus) throws MySQLTransactionRollbackException;
 
+    @Insert("INSERT INTO user_status (org, station) values (#{org}, #{station})")
+    int applyStationOnly(String org, String station);
+
     UserStatus findStatusByUserIdAndOrg(Integer userId, String org);
 
     @Delete("delete from user_status where uuid=#{uuid}")
@@ -47,4 +50,7 @@ public interface UserStatusMapper {
     Integer selectTotal();
 
     int removeStatusByIds(List<String> ids);
+
+    @Delete("delete from user_status where org=#{org} and station=#{station}")
+    void releaseStationFromUserStatus(String org, String station);
 }

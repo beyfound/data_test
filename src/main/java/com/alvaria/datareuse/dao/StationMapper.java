@@ -14,8 +14,8 @@ public interface StationMapper {
     @Update ("Update station set idle = 0 where id=#{st.id} and #{st.idle}  !=0 ")
     int applyStationId(@Param("st") Station station);
 
-    @Update ("Update station set idle = 1 where station=#{station}")
-    int releaseStation(String station);
+    @Update ("Update station set idle = 1 where station=#{station} and org=#{org}")
+    int releaseStation(String station, String org);
 
     @Select("select count(*) from station")
     Integer selectTotal();
@@ -37,5 +37,5 @@ public interface StationMapper {
 
     int update(Station station);
 
-    int releaseStaionsByIds(List<String> ids);
+    int releaseStationsByIds(List<String> ids);
 }

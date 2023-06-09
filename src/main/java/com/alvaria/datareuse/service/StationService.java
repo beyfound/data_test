@@ -1,6 +1,7 @@
 package com.alvaria.datareuse.service;
 
 import com.alvaria.datareuse.dao.StationMapper;
+import com.alvaria.datareuse.dao.UserStatusMapper;
 import com.alvaria.datareuse.dao.UserTagMapper;
 import com.alvaria.datareuse.entity.Station;
 import com.alvaria.datareuse.entity.User;
@@ -20,9 +21,23 @@ public class StationService {
     @Autowired
     private StationMapper stationMapper;
 
-    public void releaseStation(String station) {
-        stationMapper.releaseStation(station);
+    @Autowired
+    private UserStatusMapper UserStatusMapper;
+
+    public void releaseStation(String station, String org) {
+        stationMapper.releaseStation(station, org);
     }
+
+    public String applyStationByOrg(String org) {
+        String station = getIdleStationIdByOrg(org);
+        UserStatusMapper.applyStationOnly(org, station);
+        return station;
+    }
+
+    public void releaseStationFromUserStatus(String org, String station) {
+        UserStatusMapper.releaseStationFromUserStatus(org, station);
+    }
+
 
     public String getIdleStationIdByOrg(String org) {
         int time = 0;
@@ -77,6 +92,6 @@ public class StationService {
     }
 
     public int releaseStationsByIds(List<String> ids) {
-        return stationMapper.releaseStaionsByIds(ids);
+        return stationMapper.releaseStationsByIds(ids);
     }
 }

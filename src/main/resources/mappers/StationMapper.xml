@@ -52,7 +52,7 @@ mybatis是使用接口动态代理
         </where>
     </update>
 
-    <update id="releaseStaionsByIds">
+    <update id="releaseStationsByIds">
         UPDATE `station`
         <set >
             idle = true,

@@ -29,7 +29,7 @@ public class UserStatusService {
         int status = 0;
         try {
             status = userStatusMapper.applyUserIfNotExist(userStatus);
-        }catch (MySQLTransactionRollbackException e){
+        } catch (MySQLTransactionRollbackException e) {
             status = -1;
         }
         return status;

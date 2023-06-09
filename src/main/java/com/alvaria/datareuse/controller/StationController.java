@@ -1,18 +1,11 @@
 package com.alvaria.datareuse.controller;
 
-import com.alvaria.datareuse.entity.ConditionModel;
 import com.alvaria.datareuse.entity.ResponseResult;
 import com.alvaria.datareuse.entity.Station;
-import com.alvaria.datareuse.entity.WorkType;
 import com.alvaria.datareuse.service.StationService;
-import com.alvaria.datareuse.service.UploadCSVService;
-import com.alvaria.datareuse.service.WorkTypeService;
-import com.alvaria.datareuse.service.WorkTypeStatusService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +22,7 @@ public class StationController {
 
     @GetMapping("/page")
     public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam(required = false) String keyWord) {
-        return new ResponseResult(0,stationService.selectPage(pageNum, pageSize, keyWord),"");
+        return new ResponseResult(0, stationService.selectPage(pageNum, pageSize, keyWord), "");
     }
 
     @GetMapping("/status/page")
@@ -40,7 +33,19 @@ public class StationController {
         Map<String, Object> res = new HashMap<>();
         res.put("data", data);
         res.put("total", total);
-        return new ResponseResult(0,res,"");
+        return new ResponseResult(0, res, "");
+    }
+
+    @GetMapping("/apply")
+    public ResponseResult applyStationByOrg(@RequestParam String org) {
+        String station = stationService.applyStationByOrg(org);
+        return new ResponseResult(0, station, "");
+    }
+
+    @DeleteMapping("/release")
+    public ResponseResult releaseStation(@RequestParam String station, @RequestParam String org) {
+        stationService.releaseStationFromUserStatus(org, station);
+        return new ResponseResult(0, "", "Release station successfully");
     }
 
     @DeleteMapping("/delete")

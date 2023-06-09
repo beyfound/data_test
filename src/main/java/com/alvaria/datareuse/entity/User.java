@@ -30,7 +30,10 @@ public class User {
             }
             
             tagsArray = temp;
+        }else{
+            tagsArray = new String[0];
         }
+
         return tagsArray;
     }
 
