@@ -150,7 +150,7 @@ mybatis是使用接口动态代理
                 and tags is null
             </otherwise>
         </choose>
-         and id not in (select user_id from user_status where org = #{org})
+         and id not in (select user_id from user_status where org = #{org} and AND user_id IS NOT NULL)
         <if test="IDs != null and IDs.size() > 0">
             <foreach collection="IDs" item="itemList" open=" and id not in (" separator="," close=")">
                 #{itemList}

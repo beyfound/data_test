@@ -33,7 +33,6 @@ public class UploadCSVService {
             for (int row = 1; row < arrList.size(); row++) {
                 User userInfo = new User();
                 userInfo.setEmail(arrList.get(row)[0].substring(0, arrList.get(row)[0].indexOf('@')));
-                userInfo.setPassword(arrList.get(row)[1]);
                 userInfo.setDisplay(arrList.get(row)[2]);
                 userInfo.setFirstName(arrList.get(row)[3]);
                 userInfo.setLastName(arrList.get(row)[4]);
