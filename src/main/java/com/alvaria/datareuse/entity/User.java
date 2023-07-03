@@ -41,6 +41,8 @@ public class User {
         this.tagsArray = tagsArray;
     }
 
+    private String password;
+    private String cPassword;
     private String station;
     private String display;
 
