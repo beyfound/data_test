@@ -1,12 +1,12 @@
 package com.alvaria.datareuse.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSON;
 import com.alvaria.datareuse.Utils.HttpUtil;
 import com.alvaria.datareuse.entity.OrgInfo;
 import com.alvaria.datareuse.entity.User;
 import com.alvaria.datareuse.entity.WorkType;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
