@@ -83,11 +83,24 @@ public class WorkTypeService {
         return new ResponseResult(-1, "", "Apply work type failed.");
     }
 
-    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord) {
+    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord, String sort) {
         List<WorkType> workTypes = workTypeMapper.findAllByKey(keyWord);
+        String[] sortProp = sort.split(",");
+        switch (sortProp[0]){
+            case "workTypeName" :
+                if(sortProp[1].equals("ASC")){
+                    workTypes = workTypes.stream().sorted(Comparator.comparing(WorkType::getWorkTypeName)).collect(Collectors.toList());
+                }else {
+                    workTypes = workTypes.stream().sorted(Comparator.comparing(WorkType::getWorkTypeName).reversed()).collect(Collectors.toList());
+                }
+
+                break;
+            default:
+        }
+
         int wtNum = workTypes.size();
         int start = (pageNum - 1) * pageSize;
-        while (start >= wtNum) {
+        while (start >= wtNum && wtNum!= 0) {
             pageNum--;
             start = (pageNum - 1) * pageSize;
         }

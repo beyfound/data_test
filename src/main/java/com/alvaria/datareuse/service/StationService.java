@@ -2,18 +2,12 @@ package com.alvaria.datareuse.service;
 
 import com.alvaria.datareuse.dao.StationMapper;
 import com.alvaria.datareuse.dao.UserStatusMapper;
-import com.alvaria.datareuse.dao.UserTagMapper;
 import com.alvaria.datareuse.entity.Station;
-import com.alvaria.datareuse.entity.User;
-import com.alvaria.datareuse.entity.WorkType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StationService {
@@ -49,17 +43,40 @@ public class StationService {
         return null;
     }
 
-    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord) {
+    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord, String sort) throws Exception {
         List<Station> stations = stationMapper.findAllByKey(keyWord);
+        String[] sortProp = sort.split(",");
+        switch (sortProp[0]){
+            case "station" :
+                if(sortProp[1].equals("ASC")){
+                    stations = stations.stream().sorted(Comparator.comparing(Station::getStation)).collect(Collectors.toList());
+                }else {
+                    stations = stations.stream().sorted(Comparator.comparing(Station::getStation).reversed()).collect(Collectors.toList());
+                }
+
+                break;
+            case "org":
+                if(sortProp[1].equals("ASC")){
+                    stations = stations.stream().sorted(Comparator.comparing(Station::getOrg)).collect(Collectors.toList());
+                }else {
+                    stations = stations.stream().sorted(Comparator.comparing(Station::getOrg).reversed()).collect(Collectors.toList());
+                }
+                break;
+            default:
+        }
+
         int staNum = stations.size();
         int start = (pageNum - 1) * pageSize;
-        while (start >= staNum) {
+        while (start >= staNum  && staNum!= 0) {
             pageNum--;
             start = (pageNum - 1) * pageSize;
         }
 
         int end = pageNum * pageSize > staNum ? staNum : pageNum * pageSize;
         List<Station> pageStations = stations.subList(start, end);
+
+
+
         Map<String, Object> res = new HashMap<>();
         res.put("data", pageStations);
         res.put("total", stations.size());
@@ -94,4 +111,6 @@ public class StationService {
     public int releaseStationsByIds(List<String> ids) {
         return stationMapper.releaseStationsByIds(ids);
     }
+
+
 }

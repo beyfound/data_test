@@ -147,18 +147,39 @@ public class UserService {
         return userMapper.findAllByRole(role);
     }
 
-    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord) {
+    public Map<String, Object> selectPage(Integer pageNum, Integer pageSize, String keyWord, String sort) {
+        Map<String, Object> res = new HashMap<>();
         List<User> users = userMapper.findAllByKey(keyWord);
+        String[] sortProp = sort.split(",");
+        switch (sortProp[0]){
+            case "email" :
+                if(sortProp[1].equals("ASC")){
+                    users = users.stream().sorted(Comparator.comparing(User::getEmail)).collect(Collectors.toList());
+                }else {
+                    users = users.stream().sorted(Comparator.comparing(User::getEmail).reversed()).collect(Collectors.toList());
+                }
+
+                break;
+            case "role":
+                if(sortProp[1].equals("ASC")){
+                    users = users.stream().sorted(Comparator.comparing(User::getRole)).collect(Collectors.toList());
+                }else {
+                    users = users.stream().sorted(Comparator.comparing(User::getRole).reversed()).collect(Collectors.toList());
+                }
+                break;
+            default:
+        }
+
         int userNum = users.size();
         int start = (pageNum - 1) * pageSize;
-        while (start >= userNum) {
+        while (start >= userNum && userNum!= 0) {
             pageNum--;
             start = (pageNum - 1) * pageSize;
         }
 
         int end = pageNum * pageSize > userNum ? userNum : pageNum * pageSize;
         List<User> pageUsers = users.subList(start, end);
-        Map<String, Object> res = new HashMap<>();
+
         res.put("data", pageUsers);
         res.put("total", users.size());
         return res;

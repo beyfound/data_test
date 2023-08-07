@@ -21,8 +21,8 @@ public class StationController {
     private StationService stationService;
 
     @GetMapping("/page")
-    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam(required = false) String keyWord) {
-        return new ResponseResult(0, stationService.selectPage(pageNum, pageSize, keyWord), "");
+    public ResponseResult findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam(required = false) String keyWord, @RequestParam(required = false) String sort) throws Exception {
+        return new ResponseResult(0, stationService.selectPage(pageNum, pageSize, keyWord, sort), "");
     }
 
     @GetMapping("/status/page")
