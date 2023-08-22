@@ -20,6 +20,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private NonReuseUserService nonReuseUserService;
+
+    @Autowired
     private UploadCSVService uploadCSVService;
 
     @Autowired
@@ -180,7 +183,8 @@ public class UserController {
     public ResponseResult getOrganizationUsers(@PathVariable String org, @RequestParam String keyWord) {
         List<User> testBedUsers = testBedDataService.getOrganizationUsers(org, keyWord);
         List<User> usersInDB = userService.getAll();
-        List<User> userNotInDB = testBedUsers.stream().parallel().filter(a -> usersInDB.stream().noneMatch(b -> a.getEmail().equals(b.getEmail()))).collect(Collectors.toList());
+        List<NonReuseUser> nonReuseUsersInDB = nonReuseUserService.getAll();
+        List<User> userNotInDB = testBedUsers.stream().parallel().filter(a -> usersInDB.stream().noneMatch(b -> a.getEmail().equals(b.getEmail())) && nonReuseUsersInDB.stream().noneMatch(c -> a.getEmail().equals(c.getEmail()))).collect(Collectors.toList());
         return new ResponseResult(0, userNotInDB, "");
     }
 }

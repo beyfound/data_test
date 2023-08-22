@@ -1,10 +1,7 @@
 package com.alvaria.datareuse.controller;
 
 import com.alvaria.datareuse.entity.*;
-import com.alvaria.datareuse.service.TestBedDataService;
-import com.alvaria.datareuse.service.UploadCSVService;
-import com.alvaria.datareuse.service.WorkTypeService;
-import com.alvaria.datareuse.service.WorkTypeStatusService;
+import com.alvaria.datareuse.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,10 @@ public class WorkTypeController {
 
     @Autowired
     private WorkTypeService workTypeService;
+
+    @Autowired
+    private NonReuseWorkTypeService nonReuseWorkTypeService;
+
     @Autowired
     private WorkTypeStatusService workTypeStatusService;
 
@@ -122,8 +123,9 @@ public class WorkTypeController {
     @GetMapping("/organizations/{org}/workTypes")
     public ResponseResult getOrganizationUsers(@PathVariable String org, @RequestParam String keyWord){
         List<WorkType> testBedWTs = testBedDataService.getOrganizationWorkTypes(org, keyWord);
-        List<WorkType> wtsInDB  = workTypeService.getAll();
-        List<WorkType> wtsNotInDB = testBedWTs.stream().parallel().filter(a -> wtsInDB.stream().noneMatch(b -> a.getWorkTypeName().equals(b.getWorkTypeName()))).collect(Collectors.toList());
+        List<NonReuseWorkType> wtsInDB  = nonReuseWorkTypeService.getAll();
+        List<WorkType> wtsNoReuseInDB  = workTypeService.getAll();
+        List<WorkType> wtsNotInDB = testBedWTs.stream().parallel().filter(a -> wtsInDB.stream().noneMatch(b -> a.getWorkTypeName().equals(b.getWorkTypeName())) && wtsNoReuseInDB.stream().noneMatch(c -> a.getWorkTypeName().equals(c.getWorkTypeName()))).collect(Collectors.toList());
         return new ResponseResult(0, wtsNotInDB, "");
     }
 }

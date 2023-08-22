@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+mybatis是使用接口动态代理
+-->
+<mapper namespace="com.alvaria.datareuse.dao.NonReuseUserMapper">
+    <delete id="deleteByIds">
+        delete from `user_non_reuse` where
+        <foreach collection="ids" item="id" separator=" or ">
+            id = #{id}
+        </foreach>
+    </delete>
+
+    <select id="getUserById" resultType="com.alvaria.datareuse.entity.NonReuseUser">
+        select * from `user_non_reuse` where id = #{user_id}
+    </select>
+
+    <select id="findAllByKey" resultType="com.alvaria.datareuse.entity.NonReuseUser">
+        select * from `user_non_reuse`
+        <if test="keyWord != null and keyWord.length() > 0">
+            where email like CONCAT('%',#{keyWord},'%')
+        </if>
+    </select>
+
+    <select id="findAll" resultType="com.alvaria.datareuse.entity.NonReuseUser">
+        select * from user_non_reuse
+    </select>
+
+    <insert id="insertUsers" >
+        INSERT into `user_non_reuse` (`email`, `display`, `role`,`user_name`,`first_name`,`last_name`,`team`,`manager_of_team`, `comment` )
+        values
+        <foreach collection="list" item="user" separator=",">
+            (#{user.email},#{user.display},#{user.role},#{user.userName},#{user.firstName},#{user.lastName},#{user.team},#{user.managerOfTeam},#{user.comment})
+        </foreach>
+    </insert>
+
+    <insert id="insertUser" useGeneratedKeys = "true" keyProperty = "id">
+        INSERT into `user_non_reuse` (`email`, `display`, `role`,`user_name`,`first_name`,`last_name`,`team`,`manager_of_team`, `comment` )
+        values
+            (#{user.email},#{user.display},#{user.role},#{user.userName},#{user.firstName},#{user.lastName},#{user.team},#{user.managerOfTeam},#{user.comment})
+    </insert>
+
+    <update id="update" >
+        UPDATE `user_non_reuse`
+        <set >
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="display != null">
+                display = #{display},
+            </if>
+            <if test="role != null">
+                role = #{role},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="firstName != null">
+                first_name = #{firstName},
+            </if>
+            <if test="lastName != null">
+                last_name = #{lastName},
+            </if>
+            <if test="team != null">
+                team = #{team},
+            </if>
+            <if test="managerOfTeam != null">
+                manager_of_team = #{managerOfTeam},
+            </if>
+            <if test="comment != null">
+                comment = #{comment},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+
+    </update>
+
+    <select id="selectPage" resultType="com.alvaria.datareuse.entity.NonReuseUser">
+        select * from `user_non_reuse`
+        <if test="keyWord != null and keyWord.length() > 0">
+            where email like CONCAT('%',#{keyWord},'%') or comment like CONCAT('%',#{keyWord},'%')
+        </if>
+        limit #{pageNum}, #{pageSize}
+    </select>
+
+
+</mapper>

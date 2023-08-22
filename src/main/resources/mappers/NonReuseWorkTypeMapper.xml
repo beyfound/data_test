@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+mybatis是使用接口动态代理
+-->
+<mapper namespace="com.alvaria.datareuse.dao.NonReuseWorkTypeMapper">
+
+    <insert id="insertWorkTypes" >
+        INSERT into `work_type_non_reuse` (`work_type_name`, `type`, `comment`)
+        values
+        <foreach collection="list" item="wt" separator=",">
+            (#{wt.workTypeName},#{wt.type},#{wt.comment})
+        </foreach>
+    </insert>
+
+    <insert id="insertWorkType" parameterType="com.alvaria.datareuse.entity.NonReuseWorkType" useGeneratedKeys = "true" keyProperty = "id">
+        INSERT into `work_type_non_reuse` (`work_type_name`, `type`, `comment`)
+        values
+            (#{wt.workTypeName},#{wt.type},#{wt.comment})
+    </insert>
+
+    <update id="update" >
+        UPDATE `work_type_non_reuse`
+        <set >
+            <if test="workTypeName != null">
+                work_type_name = #{workTypeName},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="comment != null">
+                comment = #{comment},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+
+    </update>
+
+    <select id="findAllByKey" resultType="com.alvaria.datareuse.entity.NonReuseWorkType">
+        select * from `work_type_non_reuse`
+        <if test="keyWord != null and keyWord.length() > 0">
+            where work_type_name like CONCAT('%',#{keyWord},'%') or comment like CONCAT('%',#{keyWord},'%')
+        </if>
+    </select>
+
+    <delete id="removeWorkTypeByIds">
+        delete from `work_type_non_reuse` where
+        <foreach collection="list" item="id" separator=" or ">
+            id = #{id}
+        </foreach>
+    </delete>
+</mapper>
