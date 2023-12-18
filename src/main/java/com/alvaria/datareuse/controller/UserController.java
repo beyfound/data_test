@@ -103,6 +103,11 @@ public class UserController {
         return userService.applyOneUser(conditionModel);
     }
 
+    @PostMapping("/team")
+    public ResponseResult applyTeam(@RequestBody ConditionModel conditionModel) throws Exception {
+        return new ResponseResult(0,"\""+userService.applyTeam(conditionModel)+"\"","Apply team successfully");
+    }
+
     @DeleteMapping("/release/{uuid}")
     public ResponseResult releaseOneUser(@PathVariable String uuid) {
         int row = userStatusService.releaseUserByUUID(uuid);

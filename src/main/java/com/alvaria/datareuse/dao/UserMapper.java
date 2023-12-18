@@ -1,5 +1,7 @@
 package com.alvaria.datareuse.dao;
 
+import com.alvaria.datareuse.entity.ConditionModel;
+import com.alvaria.datareuse.entity.ResponseResult;
 import com.alvaria.datareuse.entity.User;
 import org.apache.ibatis.annotations.*;
 
@@ -46,4 +48,7 @@ public interface UserMapper {
     User getOneAvailableUser(String role, String org, String team, String identity, @Param("array") String[] tags, boolean mtData, @Param("IDs") List<Integer> exclusionIDs);
 
     List<User> findAllByKey(String keyWord);
+
+    @Select("SELECT team FROM `user` u LEFT JOIN user_status s ON (u.id = s.user_id AND s.org = #{org}) WHERE s.user_id IS NULL AND u.role = 'manager' GROUP BY team ORDER BY COUNT(*) DESC LIMIT 1")
+    String applyTeam(String org);
 }

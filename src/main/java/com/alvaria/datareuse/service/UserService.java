@@ -193,4 +193,7 @@ public class UserService {
         return userMapper.insertUsers(users);
     }
 
+    public String applyTeam(ConditionModel conditionModel) {
+        return userMapper.applyTeam(conditionModel.getOrg());
+    }
 }
