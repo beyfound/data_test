@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+mybatis是使用接口动态代理
+-->
+<mapper namespace="com.alvaria.datareuse.dao.StrategyStatusMapper">
+    <delete id="removeStatusByUUIDList">
+        delete from `strategy_status` where
+        <foreach collection="list" item="uuid" separator=" or ">
+            uuid = #{uuid}
+        </foreach>
+    </delete>
+</mapper>
