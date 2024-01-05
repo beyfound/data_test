@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface StrategyStatusMapper {
-    @Delete("DELETE FROM strategy_status WHERE testCase=#{testCase}")
+    @Delete("DELETE FROM strategy_status WHERE test_case=#{testCase}")
     int releaseStrategyByTestCase(String testCase);
     @Delete("DELETE FROM strategy_status WHERE strategy_name=#{name} and org=#{org}")
     int releaseStrategyByName(String name, String org);

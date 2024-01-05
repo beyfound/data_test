@@ -19,7 +19,7 @@ public class StrategyService {
         return strategyMapper.getIdleStrategy(org);
     }
 
-    public StrategyStatus applyStrategy(ConditionModel conditionModel){
+    public synchronized StrategyStatus applyStrategy(ConditionModel conditionModel){
         Strategy strategy = getIdleStrategy(conditionModel.getOrg());
         if(strategy == null){
             return null;

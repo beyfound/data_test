@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/release")
 @CrossOrigin
-@Api(tags = "Work Type controller")
+@Api(tags = "Release data controller")
 public class ReleaseDataController {
 
     @Autowired
