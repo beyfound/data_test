@@ -6,4 +6,23 @@
 mybatis是使用接口动态代理
 -->
 <mapper namespace="com.alvaria.datareuse.dao.StrategyMapper">
+    <delete id="deleteByIds">
+        delete from `strategy` where
+        <foreach collection="ids" item="id" separator=" or ">
+            id = #{id}
+        </foreach>
+    </delete>
+    <select id="findAllByKey" resultType="com.alvaria.datareuse.entity.Strategy">
+        select * from strategy
+        <if test="keyWord != null and keyWord.length() > 0">
+            where name like CONCAT('%',#{keyWord},'%')
+        </if>
+    </select>
+    <insert id="insertStrategies" >
+        INSERT into `strategy` (`name` )
+        values
+        <foreach collection="list" item="strategy" separator=",">
+            (#{strategy.name})
+        </foreach>
+    </insert>
 </mapper>

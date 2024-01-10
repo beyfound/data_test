@@ -1,5 +1,6 @@
 package com.alvaria.datareuse.service;
 
+import com.alvaria.datareuse.entity.Strategy;
 import com.alvaria.datareuse.entity.User;
 import com.alvaria.datareuse.entity.WorkType;
 import com.csvreader.CsvReader;
@@ -92,4 +93,25 @@ public class UploadCSVService {
         return workTypesInfos;
     }
 
+    public List<Strategy> getStrategiesFromCSV(MultipartFile multipartFile) {
+        String line = "";
+        String splitBy = ",";
+        List<Strategy> Strategies = new ArrayList<>();
+        ArrayList<String> strList = null;
+        CsvReader reader = null;
+        try {
+            reader = new CsvReader(multipartFile.getInputStream(), ',', Charset.forName("UTF-8"));
+            while (reader.readRecord()) {
+                String name = reader.getValues()[0].trim();
+                if (!name.isEmpty())
+                    Strategies.add(new Strategy(name));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            reader.close();
+        }
+
+        return Strategies;
+    }
 }
