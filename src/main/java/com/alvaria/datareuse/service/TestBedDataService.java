@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class TestBedDataService {
     private static String Username = "sysowner@%s.com";
-    private static String Password = "Forgerock1";
+    private static String Password = "Forgerock@12345";
     private static String Scope = "provisioningapi telephoneNumber mail cmAccess MessageDistributor customerexperienceapi myaspect.users acl reportingapi myaspect.teams uid outreachapi ReportingQuery ConfigurationService sn email myaspect.users.write provisioner openid givenName cn engagementcenterapi messagingapi myaspect.teams.write postalAddress preferredlanguage status";
     private static String WorkTypes_Base_Url = "https://%s.brooklyn.aspect-cloud.net/via/v2/organizations/%s/provisioning/workTypes";
     private static Map<String, OrgInfo> Test_Environment = new HashMap<String, OrgInfo>();
@@ -93,6 +93,7 @@ public class TestBedDataService {
         for (User user : totalUsers) {
             user.setEmail(user.getEmail().substring(0, user.getEmail().indexOf('@')));
             user.setUserName(null);
+            user.setReuseData(true);
             user.setManagerOfTeam(user.getManagerOfTeam().replace('[',' ').replace(']',' ').trim());
         }
 
@@ -142,6 +143,7 @@ public class TestBedDataService {
                         WorkType workType = new WorkType();
                         workType.setWorkTypeName(workTypeName);
                         workType.setType(t.getValue().toString());
+                        workType.setReuseData(true);
                         workTypes.add(workType);
                     }
                 }
